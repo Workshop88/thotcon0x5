@@ -1,0 +1,69 @@
+ 02-14-2013:
+
+     INTRODUCTION
+
+     The use of dates for version control did not communicate PCB project
+     status concisely, so the following PCB revision nomenclature has been
+     adopted.
+
+     Revision Format:
+
+        PART_NUMBER             STATUS            NUMBER      PATCH_LETTER
+
+         <varied>        [ X | T | P | A - Z ]   [ 1 -  ]       [ a - ]
+
+
+     Explanation:
+
+     PART_NUMBER:
+                   Various.
+
+     STATUS:
+              X:
+                   An experimental release, solely for research and
+                   marketing previews. Effectively a breadboard.
+
+              T:
+                   A tooling release, intended for early-stage test
+                   and evaluation. May be used to generate preliminary
+                   costing and to secure preliminary bids/quotes. May
+                   not be feature complete, or fully functional.
+
+              P:
+                   A prototype release, which is essentially a feature
+                   freeze. "P" intended for product development and
+                   testing, the production of drawings for tooling,
+                   (such as PC boards, housings, etc.) and for vendor
+                   qualification.
+
+              A-Z:
+                   A design released to manufacturing for volume 
+                   production. It is expected to meet all require-
+                   ments. Products at this status do not have a
+                   revision number or a patch letter. Feature
+                   changes or product modifications require an "up-
+                   issue" to the next consecutive revision lettter.
+                   The letters X, T, and P may not be reused for
+                   shipping products. Revisions  beyond "Z" will
+                   use a two letter "AA" "BB" "CC" sequence.
+
+       NUMBER:
+                   A number starting from 1, indicating a minor version
+                   "bump" to an X,  T, or P status part or assembly,
+                   that is less than a new design. Revision number field
+                   is not to be used for shipping products.
+
+       
+       PATCH_LETTER:
+                   Patch letters start with lower case "a" and proceed
+                   consecutively. Patch letters are to be used for "teeny"
+                   modifications to X, T, and P revisions (part substi-
+                   tutions for example), that do not warrant a full version
+                   bump. Patch letters are not to be used with shipping
+                   products.
+
+                                  **************
+
+
+               
+                

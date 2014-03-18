@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!--html5-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<meta charset="utf-8">
+
+	<title>Arduino - PinMapping32u4 </title>
+	<link rel="shortcut icon" type="image/x-icon" href="http://arduino.cc/en/favicon.png">
+
+	<script src="Arduino_PinMapping32u4_files/jquery.js"></script>
+
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/WF-003562-000476.css" type="text/css">
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/arduino-icons.css">
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/animation.css"><!--[if IE 7]>
+	<link rel="stylesheet" href="http://id.arduino.cc/css/arduino-icons-ie7.css"><![endif]-->
+	<!--[if gte IE 9]><!-->
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/foundation2.css" type="text/css">
+	<!--[endif]---->
+	<!--[if IE 8]>
+		<link rel='stylesheet' href='http://id.arduino.cc/css/foundation_ie8.css' type='text/css' />	
+	<![endif]-->
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/arduino_code_highlight.css" type="text/css">
+	<link rel="stylesheet" type="text/css" media="screen" href="Arduino_PinMapping32u4_files/typeplate.css">
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/arduinoWide_SSO.css" type="text/css">
+	
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/common.css" type="text/css">
+	<link href="https://plus.google.com/114839908922424087554" rel="publisher">
+
+	<!-- embedded JS and CSS from PmWiki plugins -->	
+	<!--HeaderText--><style type="text/css"><!--
+  ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
+  code { white-space: nowrap; }
+  .vspace { margin-top:1.33em; }
+  .indent { margin-left:40px; }
+  .outdent { margin-left:40px; text-indent:-40px; }
+  a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
+  a.createlink { text-decoration:none; position:relative; top:-0.5em;
+    font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
+  
+span.anchor {
+	float: left;
+	font-size: 10px;
+	margin-left: -10px;
+	width: 10px;
+    position:relative; top:-0.1em;
+	text-align: center;
+}
+span.anchor a { text-decoration: none; }
+span.anchor a:hover { text-decoration: underline; }
+ol.toc { text-indent:-20px; list-style: none; }
+ol.toc ol.toc { text-indent:-40px; }
+div.tocfloat { font-size: smaller; margin-bottom: 10px;
+    border-top: 1px dotted #555555; border-bottom: 1px dotted #555555;
+    padding-top: 5px; padding-bottom: 5px; 
+    width: 38%; float: right; margin-left: 10px; clear: right;
+    margin-right:-13px; padding-right: 13px; padding-left: 13px;
+    background-color: #eeeeee; }
+div.toc { font-size: smaller; 
+    padding: 5px; border: 1px dotted #cccccc;
+    background: #f7f7f7;
+    margin-bottom: 10px; }
+div.toc p { background-color: #f9f6d6;
+    margin-top:-5px;   padding-top: 5px;
+    margin-left:-5px;  padding-left: 5px;
+    margin-right:-5px; padding-right: 5px;
+    padding-bottom: 3px;
+    border-bottom:  1px dotted #cccccc; }.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border: 2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  td.markup1 { border-bottom: 1px solid #ccf; }
+  div.faq { margin-left:2em; }
+  div.faq p.question { margin: 1em 0 0.75em -2em; font-weight:bold; }
+  div.faq hr { margin-left: -2em; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+
+--></style><script type="text/javascript">
+function toggle(obj) {
+    var elstyle = document.getElementById(obj).style;
+    var text    = document.getElementById(obj + "tog");
+    if (elstyle.display == 'none') {
+        elstyle.display = 'block';
+        text.innerHTML = "hide";
+    } else {
+        elstyle.display = 'none';
+        text.innerHTML = "show";
+    }
+}
+</script>  <meta name="robots" content="index,follow">
+
+
+	<script src="Arduino_PinMapping32u4_files/custom.js"></script>
+
+	<!-- do not remove none of those lines, comments embedding in pages will break! -->
+	<script src="Arduino_PinMapping32u4_files/jquery-ui.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="Arduino_PinMapping32u4_files/jquery-ui.css" type="text/css">
+	<script src="Arduino_PinMapping32u4_files/sso_bar_js_2.php"></script>
+	<script src="Arduino_PinMapping32u4_files/a" type="text/javascript"></script>
+<style>#vzemrybryailtrrezvyxuvoumynfysjqxxg{border:solid 2px #fff !important;color:#fff !important;display:block !important;height:auto !important;margin:0 !important;opacity:0.9 !important;padding:7px 10px !important;position:fixed !important;visibility:visible !important;width:auto !important;z-index:2147483647 !important;-moz-border-radius:5px !important;border-radius:5px !important;-moz-box-shadow:0px 0px 20px #000 !important;box-shadow:0px 0px 20px #000 !important;}.vzemrybryailtrrezvyxuvoumynfysjqxxg-blocked{color:#777 !important;display:inline !important;text-decoration:line-through !important;}#vzemrybryailtrrezvyxuvoumynfysjqxxg span{background:transparent !important;}#vzemrybryailtrrezvyxuvoumynfysjqxxg div{border:0 !important;margin:0 !important;padding:0 !important;width:auto !important;letter-spacing:normal !important;font:13px Arial,Helvetica !important;text-align:left !important;text-shadow:none !important;text-transform:none !important;word-spacing:normal !important;}#vzemrybryailtrrezvyxuvoumynfysjqxxg a{font-weight:normal !important;background:none !important;text-decoration:underline !important;color:#fff !important;}@media print{#vzemrybryailtrrezvyxuvoumynfysjqxxg{display:none !important;}}</style></head>
+<body>
+
+	<div id="menuWings" class="fixed"></div>
+	<div id="page">
+		
+		
+<script>
+	var userAgent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
+	if(userAgent.indexOf('mac')>0){
+		$("head").append('<style type="text/css">@-moz-document url-prefix() {h1 a, h2 a, h3 a, h4 a, h5 a, h1 a:hover, h2 a:hover, th a, th a:hover, h3 a:hover, h4 a:hover, h5 a:hover, #wikitext h2 a:hover, #wikitext h3 a:hover, #wikitext h4 a:hover {padding-bottom: 0.5em!important;} #pageheader .search input{font-family: "TyponineSans Regular 18";} #pagefooter .monospace{margin-top: -4px;} #navWrapper ul.left &gt; li{margin-top: -2px; padding-bottom: 2px;}#navWrapper ul.right &gt; li{margin-top: -5px; padding-bottom: 5px;}#navWrapper ul.right &gt; li ul{margin-top: 4px;} .slider-container .fixed-caption p{padding:8px 0 14px 0}}</style>');
+	}
+</script>
+
+<!--[if IE]>
+<link rel='stylesheet' href='https://id.arduino.cc//css/ie-monospace.css' type='text/css' />
+<![endif]-->
+
+<div id="menuWings" class="fixed"></div>
+
+<!--[if IE 8]>
+<div class="alert-box panel ie8alert">
+  <p><strong>Arduino.cc offers limited compatibility for Internet Explorer 8. Get a modern browser as Chrome, Firefox or Safari.</strong></p>
+  <a href="" class="close">&times;</a>
+</div>
+<![endif]-->
+
+<div id="pageheader">
+	<div class="row">
+		<div class="small-6 large-8 eight columns">
+			<div class="title"><a href="http://arduino.cc/">Arduino</a></div>
+		</div>
+		<div class="small-6 large-4 four columns search">
+			<div class="row collapse">
+				<form method="GET" action="http://www.google.com/search">
+	<div class="small-12 twelve columns">
+		<i class="icon-search-2"></i>
+		<input name="ie" value="UTF-8" type="hidden">
+		<input name="oe" value="UTF-8" type="hidden">
+		<input name="q" size="25" maxlength="255" placeholder="Search the Arduino Website" type="text">
+		<input name="btnG" value="search" type="submit">
+		<input name="domains" value="http://arduino.cc" type="hidden">
+		<input name="sitesearch" value="http://arduino.cc" type="hidden">
+	</div>
+</form>			</div>
+		</div>
+	</div>
+
+	<!--[if gte IE 9]><!-->
+	<div id="navWrapper" class="sticky">
+	<!--[endif]---->
+	<!--[if IE 8]>
+		<div id="navWrapper">
+	<![endif]-->
+		<nav class="top-bar" data-options="is_hover:true">
+			<ul class="title-area">
+				<li class="name"></li>
+			</ul>
+
+			<section class="top-bar-section">
+				<ul class="left">
+					<li class="active" id="navLogo">
+						<a href="http://arduino.cc/">
+							<img src="Arduino_PinMapping32u4_files/logo_46.png" alt="userpicture">
+						</a>
+					</li>
+					<li class="active" id="navHome"><a href="http://arduino.cc/">Home</a></li>
+					<li class="has-dropdown"><a href="#">Buy</a>
+						<ul class="dropdown">
+							<li><a href="http://store.arduino.cc/ww/index.php">Store</a></li>
+							<li><a href="http://arduino.cc/en/Main/Buy">Distributors</a></li>
+						</ul>
+					</li>
+					<li><a href="http://arduino.cc/en/Main/Software">Download</a></li>
+					<li><a href="http://arduino.cc/en/Main/Products">Products</a></li>
+					<li class="has-dropdown"><a href="#">Learning</a>
+						<ul class="dropdown">
+							<li><a href="http://arduino.cc/en/Guide/HomePage">Getting started</a></li>
+							<li><a href="http://arduino.cc/en/Tutorial/HomePage">Examples</a></li>
+							<li><a href="http://playground.arduino.cc/">Playground</a></li>
+						</ul>
+					</li>
+					<li><a href="http://arduino.cc/en/Reference/HomePage">Reference</a></li>
+					<li class="has-dropdown"><a href="#">Support</a>
+						<ul class="dropdown">
+							<li><a href="http://arduino.cc/en/Main/FAQ">FAQ</a></li>
+							<li><a href="http://forum.arduino.cc/">Forum</a></li>
+							<li><a href="http://arduino.cc/en/ContactUs">Contact Us</a></li>
+						</ul>
+					</li>
+					<li><a href="http://blog.arduino.cc/">Blog</a></li>
+				</ul>
+
+								<ul class="right">
+					<li><a href="https://id.arduino.cc/auth/login/?returnurl=http%3A%2F%2Farduino.cc%2Fen%2FHacking%2FPinMapping32u4" class="cart">LOG IN</a></li>
+					<li><a href="https://id.arduino.cc/auth/signup" class="cart">SIGN UP</a></li>
+				</ul>
+							</section>
+		</nav>
+	</div>
+</div>
+
+
+
+		<br class="clear">
+
+		<div id="pagetext">
+				<!--PageText-->
+<div id="wikitext">
+<p><strong>Learning</strong> &nbsp;  <a class="wikilink" href="http://arduino.cc/en/Tutorial/HomePage">Examples</a> | <a class="wikilink" href="http://arduino.cc/en/Tutorial/Foundations">Foundations</a> | <a class="wikilink" href="http://arduino.cc/en/Hacking/HomePage">Hacking</a> | <a class="wikilink" href="http://arduino.cc/en/Tutorial/Links">Links</a>
+</p>
+<p class="vspace"></p><h2><span class="wikiword">ATmega</span> 32U4-Arduino Pin Mapping</h2>
+<div><img src="Arduino_PinMapping32u4_files/32U4PinMapping.png" alt="" title=""></div>
+<p class="vspace"></p><p style="text-align: center;"><strong>Arduino Leonardo pin mapping table</strong>
+</p>
+<p class="vspace"></p>
+<table border="1" width="100%"><tbody><tr><th align="center">Pin Number</th><th align="center">Pin Name</th><th align="center">Mapped Pin Name</th></tr>
+<tr><td align="center">1</td><td align="center"><span class="wikiword">PE6</span> (INT.<span class="wikiword">6/AIN0</span>)</td><td align="center">Digital pin 7</td></tr>
+<tr><td align="center">2</td><td align="center"><span class="wikiword">UVcc</span></td><td align="center">+5V</td></tr>
+<tr><td align="center">3</td><td align="center">D-</td><td align="center">RD-</td></tr>
+<tr><td align="center">4</td><td align="center">D+</td><td align="center">RD+</td></tr>
+<tr><td align="center">5</td><td align="center"><span class="wikiword">UGnd</span></td><td align="center">UGND</td></tr>
+<tr><td align="center">6</td><td align="center"><span class="wikiword">UCap</span></td><td align="center">UCAP</td></tr>
+<tr><td align="center">7</td><td align="center">VUSB</td><td align="center"><span class="wikiword">VBus</span></td></tr>
+<tr><td align="center">8</td><td align="center">(<span class="wikiword">SS/PCINT0</span>) <span class="wikiword">PB0</span></td><td align="center">RXLED</td></tr>
+<tr><td align="center">9</td><td align="center">(<span class="wikiword">PCINT1</span>/SCLK) <span class="wikiword">PB1</span></td><td align="center">SCK</td></tr>
+<tr><td align="center">10</td><td align="center">(<span class="wikiword">PDI/PCINT2</span>/MOSI) <span class="wikiword">PB2</span></td><td align="center">MOSI</td></tr>
+<tr><td align="center">11</td><td align="center">(<span class="wikiword">PDO/PCINT3</span>/MISO) <span class="wikiword">PB3</span></td><td align="center">MISO</td></tr>
+<tr><td align="center">12</td><td align="center">(<span class="wikiword">PCINT7/OCA0</span>/<span class="wikiword">OC1C</span>/#RTS) <span class="wikiword">PB7</span></td><td align="center">Digital pin 11 (PWM)</td></tr>
+<tr><td align="center">13</td><td align="center">RESET</td><td align="center">RESET</td></tr>
+<tr><td align="center">14</td><td align="center">Vcc</td><td align="center">+5V</td></tr>
+<tr><td align="center">15</td><td align="center">GND</td><td align="center">GND</td></tr>
+<tr><td align="center">16</td><td align="center"><span class="wikiword">XTAL2</span></td><td align="center"><span class="wikiword">XTAL2</span></td></tr>
+<tr><td align="center">17</td><td align="center"><span class="wikiword">XTAL1</span></td><td align="center"><span class="wikiword">XTAL1</span></td></tr>
+<tr><td align="center">18</td><td align="center">(<span class="wikiword">OC0B</span>/<span class="wikiword">SCL/INT0</span>) <span class="wikiword">PD0</span></td><td align="center">Digital pin 3 (SCL)(PWM)</td></tr>
+<tr><td align="center">19</td><td align="center">(<span class="wikiword">SDA/INT1</span>) <span class="wikiword">PD1</span></td><td align="center">Digital pin 2 (SDA)</td></tr>
+<tr><td align="center">20</td><td align="center">(RX <span class="wikiword">D1/AIN1</span>/<span class="wikiword">INT2</span>) <span class="wikiword">PD2</span></td><td align="center">Digital pin 0 (RX)</td></tr>
+<tr><td align="center">21</td><td align="center">(<span class="wikiword">TXD1/INT3</span>) <span class="wikiword">PD3</span></td><td align="center">Digital pin 1 (TX)</td></tr>
+<tr><td align="center">22</td><td align="center">(<span class="wikiword">XCK1</span>/#CTS) <span class="wikiword">PD5</span></td><td align="center">TXLED</td></tr>
+<tr><td align="center">23</td><td align="center"><span class="wikiword">GND1</span></td><td align="center">GND</td></tr>
+<tr><td align="center">24</td><td align="center">AVCC</td><td align="center">AVCC</td></tr>
+<tr><td align="center">25</td><td align="center">(<span class="wikiword">ICP1/ADC8</span>) <span class="wikiword">PD4</span></td><td align="center">Digital pin 4</td></tr>
+<tr><td align="center">26</td><td align="center">(T1/#<span class="wikiword">OC4D/ADC9</span>) <span class="wikiword">PD6</span></td><td align="center">Digital pin 12</td></tr>
+<tr><td align="center">27</td><td align="center">(<span class="wikiword">T0/OC4D</span>/<span class="wikiword">ADC10</span>) <span class="wikiword">PD7</span></td><td align="center">Digital Pin 6 (PWM)</td></tr>
+<tr><td align="center">28</td><td align="center">(<span class="wikiword">ADC11/PCINT4</span>) <span class="wikiword">PB4</span></td><td align="center">Digital pin 8</td></tr>
+<tr><td align="center">29</td><td align="center">(<span class="wikiword">PCINT5/OC1A</span>/#<span class="wikiword">OC4B/ADC12</span>) <span class="wikiword">PB5</span></td><td align="center">Digital Pin 9 (PWM)</td></tr>
+<tr><td align="center">30</td><td align="center">(<span class="wikiword">PCINT6/OC1B</span>/<span class="wikiword">OC4B/ADC13</span>) <span class="wikiword">PB6</span></td><td align="center">Digital Pin 10 (PWM)</td></tr>
+<tr><td align="center">31</td><td align="center">(<span class="wikiword">OC3A</span>/#0C4A) <span class="wikiword">PC6</span></td><td align="center">Digital Pin 5 (PWM)</td></tr>
+<tr><td align="center">32</td><td align="center">(<span class="wikiword">ICP3/CLK0</span>/)<span class="wikiword">C4A</span>) <span class="wikiword">PC7</span></td><td align="center">Digital Pin 13 (PWM)</td></tr>
+<tr><td align="center">33</td><td align="center">(#HWB) <span class="wikiword">PE2</span></td><td align="center">HWB</td></tr>
+<tr><td align="center">34</td><td align="center">Vcc1</td><td align="center">+5V</td></tr>
+<tr><td align="center">35</td><td align="center"><span class="wikiword">GND2</span></td><td align="center">GND</td></tr>
+<tr><td align="center">36</td><td align="center">(<span class="wikiword">ADC7</span>/TDI) <span class="wikiword">PF7</span></td><td align="center">Analog In 0</td></tr>
+<tr><td align="center">37</td><td align="center">(<span class="wikiword">ADC6</span>/TDO) <span class="wikiword">PF6</span></td><td align="center">Analog In 1</td></tr>
+<tr><td align="center">38</td><td align="center">(<span class="wikiword">ADC5</span>/TMS) <span class="wikiword">PF5</span></td><td align="center">Analog In 2</td></tr>
+<tr><td align="center">39</td><td align="center">(<span class="wikiword">ADC4</span>/TCK) <span class="wikiword">PF4</span></td><td align="center">Analog In 3</td></tr>
+<tr><td align="center">40</td><td align="center">(<span class="wikiword">ADC1</span>) <span class="wikiword">PF1</span></td><td align="center">Analog In 4</td></tr>
+<tr><td align="center">41</td><td align="center">(<span class="wikiword">ADC0</span>) <span class="wikiword">PF0</span></td><td align="center">Analog In 5</td></tr>
+<tr><td align="center">42</td><td align="center">AREF</td><td align="center">AEF</td></tr>
+<tr><td align="center">43</td><td align="center"><span class="wikiword">GND3</span></td><td align="center">GND</td></tr>
+<tr><td align="center">44</td><td align="center"><span class="wikiword">AVCC1</span></td><td align="center">AVCC</td></tr>
+</tbody></table>
+</div>
+
+				
+				
+				<!-- AddThis Button BEGIN -->
+				<div class="addthis_toolbox addthis_default_style ">
+				<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+				<a class="addthis_button_tweet"></a>
+				<a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+				<a class="addthis_counter addthis_pill_style"></a>
+				</div>
+				
+				<!-- AddThis Button END -->
+			</div> <!-- eof pagetext -->			
+	
+	</div> <!-- eof page -->
+		
+	<!--PageFooterFmt-->
+	<div id="pagefooter">
+		<div class="row">
+  <div class="small-8 columns">
+	<ul class="inline-list">
+		<li class="monospace">©Arduino</li>
+		<li><a href="http://arduino.cc/en/Main/CopyrightNotice">Copyright Notice</a></li>
+<!--		<li><a href='#'>About us</a></li>-->
+		<li><a href="http://arduino.cc/en/Main/ContactUs">Contact us</a></li>
+	</ul>
+</div>
+
+	</div>
+	<!--/PageFooterFmt-->
+	
+	  <!--[if gte IE 9]><!-->
+	  <script src="Arduino_PinMapping32u4_files/foundation.js"></script>
+	  <script src="Arduino_PinMapping32u4_files/foundation_002.js"></script>
+	  <script>
+	    $(document).foundation();
+	  </script>
+	  <!--<![endif]-->
+	  <!--[if IE 8]>
+	  <script src="http://id.arduino.cc/js/foundation_ie8.min.js"></script>
+	  <script src="http://id.arduino.cc/js/ie8/jquery.foundation.orbit.js"></script>
+	  <script src="http://id.arduino.cc/js/jquery.foundation.alerts.js"></script>
+	  <script src="http://id.arduino.cc/js/app.js"></script>
+
+	  <script>
+	  $(window).load(function(){
+	    $("#featured").orbit();
+	  });
+	  </script> 
+	  <![endif]-->
+	
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-22581631-3']);
+	  _gaq.push(['_setDomainName', 'arduino.cc']);
+	  _gaq.push(['_trackPageview']);
+	
+	    (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+
+
+</div></body></html>

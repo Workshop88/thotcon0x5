@@ -1,0 +1,24 @@
+Drill report for /home/paul/00-WORKSHOP88/00-BADGE-0x5/00PCB-Layout/development/iss_T1/thotcon_0x5.brd
+Created on Wed 26 Feb 2014 13:06:37 CST
+Drill report for plated through holes :
+T1  0.51mm  0.020"  (77 holes)
+T2  0.56mm  0.022"  (2 holes)  (with 2 slots)
+T3  0.71mm  0.028"  (2 holes)  (with 2 slots)
+T4  0.76mm  0.030"  (18 holes)
+T5  0.80mm  0.032"  (4 holes)
+T6  0.81mm  0.032"  (20 holes)
+T7  0.89mm  0.035"  (14 holes)
+T8  0.94mm  0.037"  (2 holes)
+T9  0.97mm  0.038"  (8 holes)
+T10  1.00mm  0.039"  (3 holes)  (with 3 slots)
+T11  1.02mm  0.040"  (34 holes)
+
+Total plated holes count 184
+
+
+Drill report for unplated through holes :
+T1  5.00mm  0.197"  (4 holes)
+
+Total unplated holes count 4
+
+

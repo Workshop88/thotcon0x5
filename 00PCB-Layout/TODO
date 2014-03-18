@@ -1,0 +1,18 @@
+TODO:
+    01-29-2013:
+
+    -- Add 5 volt tolerance for compatibility with 5 volt Arduino
+       shields.
+
+    02-12-2013:
+
+    -- Implement high speed USB. We already have USB connection means.
+       There appears to be area available opposite the USB connector
+       side of the PC board.
+
+     03-09-13
+
+    -- Undoubtedly, the antenna/feedline arragement could be tweaked/
+       imporved. An accurate planar 3D simulation should be able to
+       identify refinements. 150 foot range was obtained with a P2
+       prototype. How much more performance could be gained is unclear.
