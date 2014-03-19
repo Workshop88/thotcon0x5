@@ -1,0 +1,580 @@
+/* @override 
+	http://sso.ffranchino.dev/css/common.css */
+
+
+
+@charset 'utf-8';
+
+/*		TYPOGRAPHY		*/
+
+body{
+	font-family: "TyponineSans Regular 18", "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;			
+	margin: 0;
+	padding: 0;	
+}
+
+strong{
+	font-family: "TyponineSans Text 16";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+}
+
+
+h1,h2, h3, h4, .monospace, h1 strong,h2 strong, h3 strong, h4 strong {
+	font-family: "TyponineSans Monospace Regular 4", "TyponineSans Monospace Light 5";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+}
+
+h3, h4 {
+	color: #e34c00;
+}
+
+h1 a:target, h2 a:target, h3 a:target, h4 a:target, h5 a:target{	/*	to fix the internal anchors position with the sticky menu	*/
+	content: "";
+	position: relative;
+	display: block;
+	z-index: -9999;
+	width: 5px;
+	height: 50px;
+	margin-top: -50px
+}
+
+h2 {
+	color: #333;
+	margin-top: .6em;
+	margin-bottom: .6em;
+	line-height: 1.2em;
+}
+
+h3{
+	margin: 25px 0 19px;
+	margin: 2rem 0 1.0555rem;
+	color: #00979c;
+	line-height: 42px;
+	line-height: 2.33333333rem;
+}
+
+h3.productCategory {
+	font-size:25px;
+	font-size: 1.555555556rem;
+	line-height: 1.3em;
+	text-transform: uppercase;
+}
+
+h2 a:hover, h3 a:hover, h4 a:hover{
+	text-decoration: none!important;
+	border-bottom: 1px solid;
+}
+
+#sidebar ul ul{
+	text-indent: -20px;
+	padding-left: 30px;
+}
+
+#sidebar ul ul li:before, #sidebar ul ul li::before{
+	content: "–";
+	font-weight: bold;
+	text-indent: -9999px;
+	position:relative; 
+	left:-10px;
+}
+
+
+#pagenav ul , #wikitext ul:not(.orbit-slides-container){
+	margin: 0;
+	padding-left: 30px;
+	list-style-type: none;
+}
+
+.productLinks li, .productDescription ul > li {
+  list-style: none;
+  padding-left: 10px;
+}
+
+#wikitext ul li, .productLinks li, .productDescription ul > li{
+	font-size: .882352941rem;
+	margin: .235294118rem 0;
+	text-indent: -18px;
+}
+
+#wikitext ul#featured li, .productLinks li, .productDescription ul > li{
+	text-indent: 0px;
+	margin-top: 0;
+}
+
+
+
+#pagenav ul li:before, #wikitext ul:not(.orbit-slides-container) li:before, #pagenav ul li::before, #wikitext ul:not(.orbit-slides-container) li::before, .productLinks li:before,.productDescription ul > li:before{
+	content: "-";
+	font-weight: bold;
+	text-indent: -9999px;
+	position:relative; 
+	left:-10px;
+}
+
+html, body, #userHeader, div#wikitext, div#pagetext { height: 100%; }
+body > #page { height: auto; min-height: 100%; }
+
+.clear{
+	clear: both;
+}
+
+hr {border-top: 1px solid #ccc;}
+
+.alert-box{
+  background-color: #eef7f7;
+  color: #007073;
+  border-width: 0;
+}
+
+.alert-box{
+  font-size: 14px;
+  font-size: .777777778rem;
+  line-height: 1.4em;
+  font-family: "TyponineSans Regular 18", "Lucida Grande", Lucida, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-stretch: normal;			  
+}
+
+  .alert-box p{
+      margin-bottom: 0;
+  }
+
+  .alert-box.alert {
+    background: #fef0e8;
+    color: #E34C00;
+  }
+
+/*			HEADER  		*/
+body{
+	background: url(../img/nav_big.png) 0 -26px repeat-x #fff;
+}
+
+.fixed{
+	left: auto;
+}
+
+#menuWings{
+	height: 40px;
+	width: 100%;
+	top: 0;
+	left: 0;
+	position: fixed;
+	background: #00979c;
+	display: none;
+}
+
+#page, 	#navWrapper, #pagetext{
+	max-width: 960px;
+	margin: 0 auto;
+}
+
+#page, #pagetext{
+	padding-bottom: 10em!important;
+}
+
+#page{
+	padding: 0 20px;
+}
+
+
+#pageheader {
+	width: 100%;
+	text-align: left;
+	padding-top: 50px;
+	margin-bottom: 20px;
+}
+
+#pageheader .title {
+	float: left;
+	text-align: left;
+	margin-bottom: 40px;
+	margin-top: 0px;
+	letter-spacing: 0;
+	color: #fff;
+	font-weight: bold;
+	text-shadow: #aaa 0 0 5px;
+	height: 66px;
+}
+
+.top-bar, .top-bar a{
+	font-family: "TyponineSans Regular 18";
+	font-stretch: normal;
+	font-weight: normal;
+}
+
+.top-bar-section li a:not(.button){
+	line-height: 40px;
+}
+.top-bar-section .dropdown li a, .top-bar-section .dropdown li h5 a{
+	line-height: 12px;
+}
+
+.top-bar-section ul.right li.userPic{
+	position: relative;
+	margin-top: -2px;
+}
+
+.top-bar-section ul.right li.userPic .dropdown{
+	padding-top: 2px;
+}
+
+
+.top-bar-section ul.right .userPic a img {
+	border-radius: 50%;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	width: 32px;
+	height: 32px;
+}
+
+#pageheader .title a {
+	color: #fff;
+	border: none;
+	display: block;
+	text-indent: -9999em;
+	background: url(../img/logo_w_100.png) no-repeat;
+	height: 80px;
+	width: 170px;
+}
+
+
+.top-bar-section ul li > a{
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+
+.top-bar #navHome{
+	width: 66px;
+}
+
+.lt-ie9 .top-bar-section ul li > a{
+	letter-spacing: 0;
+}
+
+#pageheader .search{
+	margin-top: 41px;
+}
+
+#pageheader .search input.button {
+	text-transform: uppercase;
+	font-size: 13px;
+	background-color: #E9F5F5;
+	color:  #00797d;
+}
+
+
+a.cart i{
+	font-size: 20px;
+	vertical-align: middle;
+}
+
+#pagenav a, #pagenav a:link, #wikitext a, #wikitext a:link, .narrowcolumn a, .narrowcolumn a:link {
+	color: #00979C;
+	text-decoration: none;
+}
+
+h4 a{
+	color: inherit!important;
+}
+
+#sidebar a:hover, #pagenav a:hover, #wikitext a:hover, .narrowcolumn a:hover {
+	text-decoration: underline;
+	padding-bottom: 0;
+}
+
+
+#pageheader .search input.button:hover, #pageheader, .top-bar-section ul{
+	background-color: #00979C;
+	color:  #ffffff;
+}
+
+#pageheader .search input {
+	height: 28px;
+	border: 0;
+	border-bottom: 1px solid #99D5D7;
+	font-family: "TyponineSans Monospace Regular 4", "TyponineSans Monospace Light 5";
+	font-size: .88888em;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	padding: 0 4px;
+	color: #fff;
+	
+}
+
+#pageheader .search input[type=text]{
+	padding: 4px 26px 0 4px;
+	font-size: .777777778em;
+	background-color: #0ca1a6;
+}
+
+.lt-ie9 #pageheader .search input[type=text]{
+	padding-top: 8px;
+}
+
+#pageheader .search input[type=text]:focus{
+	background-color: #0fa7ac;
+	
+}
+
+#personalInfoModal form div.row.collapse input {
+	-webkit-border-top-left-radius: 2px;
+	-webkit-border-bottom-left-radius: 2px;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+	-moz-border-radius-topleft: 2px;
+	-moz-border-radius-bottomleft: 2px;
+}
+
+#pageheader form {
+	margin: 0!important;
+}
+    
+#pageheader .search input[type=submit]{
+	border: 0;
+	cursor: pointer;
+	display: block;
+	height: 19px;
+	padding: 0;
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 19px;
+	text-decoration: none;
+	text-indent: -9999px;
+	background: transparent;
+
+}
+
+#pageheader .search i{
+	position: absolute;
+	top: 1px;
+	right: 2px;
+	font-size: 15px;
+	color: #99D5D7;
+}
+
+.lt-ie9 #pageheader .search i{
+	top: 4px;
+}
+
+#pageheader .search input::-webkit-input-placeholder {
+   	color: #99D5D7;
+}
+
+#pageheader .search input:-moz-placeholder { /* Firefox 18- */
+   color: #99D5D7;}
+
+#pageheader .search input::-moz-placeholder {  /* Firefox 19+ */
+   color: #99D5D7;
+}
+
+#pageheader .search input:-ms-input-placeholder {  
+   color: #99D5D7;
+}
+
+#navWrapper {
+	padding: 0;
+	margin: 0;
+	padding-right: 10px;
+	width: 940px;
+	z-index: 999;
+}
+
+#navWrapper , .navWrapper.row, .top-bar, nav.top-bar ul.left, nav.top-bar ul.right,.top-bar-section li a:not(.button),.top-bar-section ul li.active {
+	height: 40px!important;
+}
+
+#navWrapper .right.log {
+	text-transform: uppercase;
+	font-size: .95rem;
+	letter-spacing: 1px;
+}
+
+#navLogo{
+	display: none;
+}
+
+#navLogo a{
+	padding: 0 10px;
+}
+
+
+#navLogo a img{
+	margin-top: -3px;
+}
+
+
+span.numMess{
+	text-align: center;
+	border-radius: 20%;
+	-moz-border-radius: 20%;
+	-webkit-border-radius: 20%;
+	background-color: #47ADB3;
+	color:  #fff;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 1.3em;
+	box-shadow: 2px 2px 0px #225657;
+	position: absolute;
+	padding: 3px 3px 1px 3px;
+	top: 2px;
+	right: 4px;
+	
+	display: none;
+}
+
+.userPic{
+	position: relative;
+}
+.userPic > a span.numMess{
+	padding: 3px 3px 1px 3px;
+	right: 26px;
+
+}
+
+#navWrapper ul.right > li:hover a.cart, #navWrapper ul.right > li.userPic:hover > a {
+	background-color: #00979C!important;
+	color: #005558;
+}
+
+#navWrapper ul.right > li.userPic > a img{
+	box-shadow: 2px 1px 0px #8bbaba;
+}
+
+#navWrapper ul.right > li:hover.userPic > a img{
+	box-shadow: 2px 1px 0px #225657;
+}
+
+#navWrapper ul.right > li.userPic:hover > a:after{
+	border-top-color: #005558;
+}
+
+.top-bar-section ul.log li > a{
+	color: #fff;
+	
+}
+
+.top-bar-section ul.log li:hover > a{
+	background: #00979C!important;
+	color: #c1e0e0;
+}
+
+.top-bar-section ul li:hover > a, .top-bar-section .dropdown li a, .top-bar-section ul li:active > a, .top-bar-section .dropdown li label {
+	background-color: #008184; /* 008184 */
+}
+
+.top-bar-section ul li.active > a{
+	background-color: #008184!important;
+}
+
+
+.top-bar-section ul li li:hover > a{
+	background-color: #006d70 !important;
+}
+
+/*		FOOTER		*/	
+
+#pagefooter {
+	background-color: #00979C;
+	color: #fff;
+	padding: 40px 20px;
+	font-size: .8222em;
+	font-family: "TyponineSans Text 16";
+	font-weight: normal;
+	clear: both;
+	position: relative;
+	height: 10em;
+	/* margin-top: -10em; */
+	margin-top: 2em;
+}
+
+#pagefooter a:hover{
+	text-decoration: underline;
+}
+
+#pagefooter .columns {
+	padding: 0;
+}
+
+#pagefooter a{
+	color: #fff;	
+}
+
+#pagefooter ul li{
+	list-style: none;
+	line-height: 1.6em;
+}
+
+.addthis_toolbox {
+  text-align: right;
+}
+
+.hidden {
+	display: none;
+}
+
+#actions {
+	font-size: .8em;
+	margin-bottom: 15px;
+}
+
+#actions a {
+	padding: 10px;
+}
+
+.alert-box h1,
+.alert-box h2,
+.alert-box h3,
+.alert-box h4,
+.alert-box h5,
+.alert-box h6 {
+	color: white;
+}
+
+/** ===================== angularjs ======================================== **/
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.preOrbit{
+  list-style: none;
+}
+
+
+
+
+
+
+/* Footer social links */
+#arduinoSocialLinks{
+	list-style-type: none;
+	float: right;
+	margin-top: 55px;
+	margin-right:30px;
+}
+#arduinoSocialLinks li{
+	display: inline-block;
+	margin-left: 5px;
+}
+#arduinoSocialLinks li img{
+	width:28px;
+	opacity:.85;
+}
+#arduinoSocialLinks li:hover img{
+	opacity:1;
+}
+
+
+
+.socialSharing{
+	margin-top:30px!important;
+}

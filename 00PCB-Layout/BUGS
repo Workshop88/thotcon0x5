@@ -1,0 +1,15 @@
+BUGS:
+
+ISS T1:
+
+    02-26-2014:
+
+1: Drill file contains spurious hole sizes. Optimize for prod'n.
+
+2: U4 Vcc should be 3.3 V, not 5 volts.
+
+3: MANUFACTURE: Move SMD components away from through holoe foot-
+   prints, for use with selective solder.
+
+
+
