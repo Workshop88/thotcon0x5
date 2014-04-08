@@ -1,0 +1,17 @@
+ Feb. 17 2014
+      iss_T1:  Initial tooling release
+      
+Mar. 27 2014 
+      
+      iss_p1: Prototype release
+- S1 - S7:  Fix pin mapping.
+- C19: Fix reference text.
+- U4:  Fix wrong footprint. Move pin 1 to 3V rail.
+- C18: Move to U4 bypass.
+- R16: 120 was 10K.
+- D4/D5: Move clear of program fixture.
+- Add Thotcon logo. Add radiused corners. Use
+single .0312 drill, where possible.
+- Drawing: Clarify notes. Add stack up info.
+
+
