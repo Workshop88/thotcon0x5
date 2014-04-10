@@ -1,0 +1,52 @@
+### Module positions - created on Sat 29 Mar 2014 16:38:55 CDT ###
+### Printed by Pcbnew version pcbnew (2013-dec-23)-stable
+## Unit = inches, Angle = deg.
+## Side : All
+# Ref    Val                  Package         PosX       PosY        Rot     Side
+C2       1 uF             SM0603_Capa         2.3450     1.3350       0.0    F_copper
+C3       4.7 uF           SM1206              1.0325     1.5425     180.0    F_copper
+C4       .01 uF           SM0603_Capa         0.9575     1.3675      90.0    F_copper
+C5       4.7 uF           SM1206              1.0325     1.2425     180.0    F_copper
+C6       .01 uF           SM0603_Capa         0.9575     1.0675      90.0    F_copper
+C7       4.7 uF           SM1206              1.0325     0.9425     180.0    F_copper
+C8       .1 uF            SM0603_Capa         2.0900     0.9000     180.0    F_copper
+C9       1 uF             SM0603_Capa         1.7300     0.9300       0.0    F_copper
+C11      1 uF             SM0603_Capa         2.2850     1.2650       0.0    F_copper
+C12      18 pF            SM0603_Capa         2.4350     1.6150     270.0    F_copper
+C13      18 pF            SM0603_Capa         2.3600     1.6150     270.0    F_copper
+C14      1 uF             SM0603_Capa         2.2600     0.6650      90.0    F_copper
+C15      1 uF             SM0603_Capa         2.0350     0.6450       0.0    F_copper
+C16      1 uF             SM0603_Capa         2.1600     0.6450       0.0    F_copper
+C17      .1 uF            SM0603_Capa         1.4950     0.6450       0.0    F_copper
+C18      .1 uF            SM0603_Capa         2.8400     0.6000      90.0    F_copper
+C19      .1 uF            SM0603_Capa         2.0130     1.5140     180.0    F_copper
+C20      .1 uF            SM0603_Capa         1.6200     1.3850      90.0    F_copper
+D2       MBR0530          MBR0530             0.6100     1.6650       0.0    F_copper
+D4       MBR0530          MBR0530             2.8850     0.3650     270.0    F_copper
+D5       MBR0530          MBR0530             3.0100     0.3650     270.0    F_copper
+D6       S01575           SM1206POL           1.5050     0.9450       0.0    F_copper
+DS2      PARTY!           LED-1206-REV        0.6350     0.6750       0.0    F_copper
+F1       .5 A             SM1206              2.8600     1.8950       0.0    F_copper
+J6       USB_IN           USB_MICRO_B_THM     2.7100     2.0250     270.0    F_copper
+R1       1K               SM0603              0.4850     0.7000     270.0    F_copper
+R2       5V               SM0603              2.7850     1.8050       0.0    F_copper
+R3       5V               SM0603              2.6700     1.8450     180.0    F_copper
+R4       22               SM0603              2.2850     1.1850     180.0    F_copper
+R5       22               SM0603              2.2850     1.1150     180.0    F_copper
+R6       120              SM0603              1.4500     0.7750     180.0    F_copper
+R7       10K              SM0603              1.4500     0.8500       0.0    F_copper
+R8       10K              SM0603              1.6350     1.7350     180.0    F_copper
+R9       10K              SM0603              1.6350     1.8150     180.0    F_copper
+R10      10K              SM0603              1.6150     1.6500     180.0    F_copper
+R11      10K              SM0603              1.7600     1.7350       0.0    F_copper
+R12      10K              SM0603              1.7850     1.6500       0.0    F_copper
+R13      10K              SM0603              1.7600     1.8150       0.0    F_copper
+R16      120              SM0603              1.1200     0.6450     180.0    F_copper
+U1       ATMEGA32U4       TQFP44              1.9200     1.2250     180.0    F_copper
+U2       5V               SOT23-5             1.0825     1.3925     180.0    F_copper
+U3       3.3V             SOT23-5             1.0825     1.0925     180.0    F_copper
+U4       MC14050          SOIC-16-D           2.6600     0.5750      90.0    F_copper
+Y1       8.000 MHz        CRYSTAL_SMD_4824    2.0750     1.6850       0.0    F_copper
+Z1       300              SM0603              2.6000     1.9150       0.0    F_copper
+Z2       300              SM0603              1.5450     1.3850     270.0    F_copper
+## End
