@@ -1,4 +1,4 @@
-PCBNEW-BOARD Version 2 date Tue 01 Apr 2014 13:05:29 CDT
+PCBNEW-BOARD Version 2 date Fri 11 Apr 2014 14:39:01 CDT
 
 # Created by Pcbnew(2013-dec-23)-stable
 
@@ -7,7 +7,7 @@ encoding utf-8
 Units mm
 LayerCount 2
 EnabledLayers 13FC8001
-VisibleLayers 11000000
+VisibleLayers 11008001
 Links 180
 NoConn 0
 Di 16.615229 11.874499 314.679001 189.3951
@@ -22,7 +22,7 @@ $EndGENERAL
 $SHEETDESCR
 Sheet A 11000 8500
 Title "BOARD, PC, THOTKON 0X5"
-Date "1 apr 2014"
+Date "11 apr 2014"
 Rev "P1"
 Comp "Workshop 88"
 Comment1 "Drawn: Paul Reich"
@@ -68,8 +68,8 @@ Pad2MaskClearance 0.0762
 SolderMaskMinWidth 0.127
 Pad2PasteClearanceRatio -0.05
 AuxiliaryAxisOrg 103.251 88.9
-VisibleElements FFFF4801
-PcbPlotParams (pcbplotparams (layerselection 33554432) (usegerberextensions false) (excludeedgelayer false) (linewidth 0.150000) (plotframeref true) (viasonmask false) (mode 1) (useauxorigin false) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 2) (psnegative false) (psa4output false) (plotreference true) (plotvalue false) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk false) (outputformat 2) (mirror true) (drillshape 0) (scaleselection 1) (outputdirectory /home/paul/00-WORKSHOP88/00-BADGE-0x5/00PCB-Layout/development/iss_p1/release/))
+VisibleElements FFFF6B01
+PcbPlotParams (pcbplotparams (layerselection 2097152) (usegerberextensions false) (excludeedgelayer false) (linewidth 0.150000) (plotframeref true) (viasonmask false) (mode 1) (useauxorigin false) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 2) (psnegative false) (psa4output false) (plotreference true) (plotvalue false) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk false) (outputformat 2) (mirror false) (drillshape 0) (scaleselection 1) (outputdirectory /home/paul/git/thotcon0x5/hardware/development/iss_p1/release/))
 $EndSETUP
 
 $EQUIPOT
@@ -7983,12 +7983,12 @@ nl "4.  Co-ordinate System:"
 nl ""
 nl "    Drill file and SMT centroid 0, 0 origin (reference point) located per drawing."
 nl ""
-nl "5.  ASSEMBLY:"
+nl "5.  ASSEMBLY (refer also to 00-ASM-README file)."
 nl ""
-nl "    a.  DS2: LED mounts \"lens down\" on SMD side. Verify presence and fit of lens hole prior to assembly."
-nl "    b.  Manufacturer & RoHS labels on LC display DS1 must be removed prior to assembly."
+nl "    a.  DS2 mounts \"lens down\" on SMD side. Verify presence of hole, and fit of DS2 prior to assembly."
+nl "    b.  Place RED pushbuttons at S1 and S2 ONLY.  Place BLACK pushbuttons at S3-S7."
 nl "    c.  Fixture display to maintain display - PCB clearance per drawing."
-nl "    b.  Orient battery holders per legend. Refer to 00-ASM-README file."
+nl "    b.  Orient battery holders per legend."
 Po 18.542 136.271 1.524 1.524 0.127 0
 De 24 1 0 Normal L C
 $EndTEXTPCB

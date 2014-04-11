@@ -1,6 +1,13 @@
 FILE:  00-ASSEMBLY-README.TXT 
 
-April 1 2014 rev. P1
+April 11 2014 rev. P1
+
+CHANGES:
+
+    1.  Do not place white tape on "gold" and red boards.
+    2.  Do not put white tape on DS1. Delete white tape from BOM.
+    3.  (4a) Do not remove manufacturer stickers from display.
+    4.  ADD Note A, Red and black switches.
 
 Project: "Thotcon0x5 Badge Project" - An electric name tag.
 
@@ -12,6 +19,9 @@ Client: Thotcon 0x5 Organizing Committee.
 
 NOTES:
 
+   A.  Place RED switches at S1 and S2.  Place BLACK switches at
+       S3, S4, S5, S6, & S7. Failure to do is a visual defect.
+
    1.  Please advise ASAP as to the suitability of the enclosed
        files, particularly the centroid file (thotcon_0x5-all.pos),
        should any file conversions be required.
@@ -20,29 +30,22 @@ NOTES:
        units will be delivered for assembly.
        
        Over-runs, scrap, and leftover material must be returned.
+       Please return unpopulated PCBs and panels as well.
 
    3.  Manufacture each of the following colors as follows:
 
         SOLDER MASK         SILKSCREEN        Quantity
    
-     * Gloss "gold"           BLACK           8 minimum
-     * Gloss red              BLACK          40   "
+       Gloss "gold"           BLACK           8 minimum
+       Gloss red              BLACK          40   "
        Gloss blue             WHITE          40   "
        Gloss green            WHITE         128   "
        Flat black             WHITE         608   "
                                             ____________
                               GRAND TOTAL   824 minimum
 
-     * A piece of white tape must be placed on the bottom of the
-       displays installed in the gold and red boards ONLY.
-
    4.  DS1 - Glass display:
-   
-       a.  Manufacturer logos & RoHS stickers, if present, must be
-           removed prior to assembly. Failure to do so is a visual
-           DEFECT. (Clear plastic covering may be left in place.)
-           
-       b.  Glass display DS1 must be fixtured such that the under-
+           Glass display DS1 must be fixtured such that the under-
            side of the display is spaced .04" - .07" above the PCB
            surface.  Failure to do so is a DEFECT that will leave
            the displays susceptible to mechanical and thermal stress
@@ -50,17 +53,16 @@ NOTES:
 
    5.  There are a several unused components on each assembly. These
        components are designated "DO NOT PLACE" or "P/O PCB" on the
-       bill of material. Holes for unplaced though hole components
-       must remain free of solder.
+       bill of material. Holes for "DO NOT PLACE" components must
+       remain free of solder.
 
    6.  Battery holders must be positioned with opening (cutout) as
        shown on the silkscreen.
        
-   7.  Build the GOLD and RED panels FIRST. Use ALL gold and red
-       panels. Build the GREEN and BLUE panels next. Use up ALL green
-       and blue panels. Run the BLACK panels LAST, as these panels
-       are the most numerous, and shortfalls here can be accommodated
-       more readily.
+   7.  Build ALL GOLD and RED panels FIRST. Build ALL GREEN and BLUE
+       panels next. Build the BLACK panels LAST. These panels are
+       the most numerous. Shortfalls here can be accommodated more
+       readily.
        
    8.  Finished goods must be packaged in a manner sufficient to
        protect against ESD hazards & breakage of the (glass) display
@@ -69,9 +71,9 @@ NOTES:
        
    9.  Customer will install batteries and program units.
 
-  10.  Completed units and other materials, as noted in (3) will be
-       retrieved by the customer (or his agent) at the Elk Grove
-       Village location.
+  10.  Completed units and other materials, as noted in (2) and (3)
+       will be retrieved by the customer (or his agent) at your Elk
+       Grove Village location.
 
 
 ********************************************************************
