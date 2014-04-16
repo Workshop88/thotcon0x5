@@ -178,7 +178,7 @@ void uiSetup(void) {
 void uiStep(void) {
   uint8_t is_key_pressed = 0;
   uint8_t real_inc;
-  if ( isKeyPad == 0 )
+  /*if ( isKeyPad == 0 )
   {
     int sensorValue;
     // assume, that no keypad is used and derive the location from analog input
@@ -190,7 +190,7 @@ void uiStep(void) {
       isKeyPad = 1;
     if ( digitalRead(uiKeyRightPin) == LOW )
       isKeyPad = 1;
-  } 
+  } */
   if ( isKeyPad != 0 )
   {
     real_inc = uiActualIncrement;
@@ -317,7 +317,7 @@ void bo_Step(void)
     {
       case BO_STATE_INTRO:
 	  bo_step_state = BO_STATE_INTRO1;
-	  bo_timer = 127;
+	  bo_timer = 12;
 	break;
       case BO_STATE_INTRO1:
 	bo_timer--;
@@ -331,12 +331,12 @@ void bo_Step(void)
 	if ( bo_ball1_obj.is_ball_lost != 0 && bo_ball2_obj.is_ball_lost != 0  && bo_ball3_obj.is_ball_lost != 0 )
 	{
 	  bo_step_state = BO_STATE_LOST;
-	  bo_timer = 80;
+	  bo_timer = 12;
 	}
 	if ( bo_remaining_bricks == 0 )
 	{
 	  bo_step_state = BO_STATE_COMLETED;
-	  bo_timer = 80;
+	  bo_timer = 12;
 	}
 	break;
       case BO_STATE_LOST:
@@ -1119,74 +1119,125 @@ const char *el_main_getstr(uint8_t i, uint8_t msg) {
 uint8_t idle_count = 0;  //track idle cycles
 uint8_t el_main_first = 0;
 uint8_t el_main_cnt = 5;
+uint8_t el_sched_cnt=6;
 
 uint8_t schedule_first=0;
 uint8_t schedule_cnt=48;
 
-M2_EXTERN_INFOP(el_welcome_info);
-
-m2_menu_entry schedule_data[] = 
-{
-  { "TRACK ONE", NULL },
-  { ". 0830 - DOORS", NULL },
-  { ". 0945 - WELCOME.0", &el_welcome_info },
-  { ". 1000 - KEYNOTE.1", NULL },
-  { ". 1100 - TALK.1", NULL },
-  { ". 1200 - TALK.2", NULL },
-  { ". 1300 - BREAK", NULL},
-  { ". 1400 - TALK.3", NULL },
-  { ". 1500 - KEYNOTE.2", NULL},
-  { ". 1600 - TALK.4", NULL},
-  { ". 1700 - BREAK", NULL},
-  { ". 1730 - TALK.5", NULL},
-  { ". 1830 - TALK.6", NULL},
-  { ". 1930 - TALK.7", NULL},
-  { ". 2030 - HACKER BREW RESULTS", NULL},
-  { ". 2100 - CLOSING", NULL},
-  { ". 2120 - SYS64738", NULL},
-  { "TRACK 2", NULL },
-  { ". 1100 - TURBO.1", NULL},
-  { ". 1130 - TURBO.2", NULL},
-  { ". 1200 - TURBO.3", NULL},
-  { ". 1230 - TURBO.4", NULL},
-  { ". 1300 - BREAK", NULL},
-  { ". 1400 - TURBO.5", NULL},
-  { ". 1430 - TURBO.6", NULL},
-  { ". 1500 - TURBO.7", NULL},
-  { ". 1530 - BREAK", NULL},
-  { ". 1600 - TURBO.8", NULL},
-  { ". 1630 - TURBO.9", NULL},
-  { ". 1700 - TURBO.10", NULL},
-  { ". 1730 - TURBO.11", NULL},
-  { ". 1800 - ./SHUTDOWN", NULL},
-  { "LABS", NULL },
-  { ". 0900 - LAB.1", NULL},
-  { ". 1000 - LAB.2", NULL},
-  { ". 1100 - LAB.3", NULL},
-  { ". 1200 - LAB.4", NULL},
-  { ". 1300 - BREAK", NULL},
-  { ". 1400 - LAB.5/6", NULL},
-  { ". 1630 - BREAK", NULL},
-  { ". 1700 - LAB.7", NULL},
-  { ". 1800 - LAB.8", NULL},
-  { ". 1900 - ./SHUTDOWN", NULL},
-  { "VILLAGE", NULL},
-  { "PARTY", NULL},
-  {NULL, NULL},
-};
-char welcome[] M2_SECTION_PROGMEM = "c7five\0";
 extern M2tk m2; 
 M2_EXTERN_2LMENU(el_schedule);
 void schedule_root(m2_el_fnarg_p fnarg){
  m2.setRoot(&el_schedule); 
 }
 
+
+char welcome1_str[] M2_SECTION_PROGMEM ="c7five\n\"HELLO\"";
+M2_INFOP(welcome1_i,"W60l6",&el_main_first,&el_sched_cnt,welcome1_str,schedule_root);
+char keynote1_str[] M2_SECTION_PROGMEM ="\"UFOs and\nGovernment\"\nRichard Thieme";
+M2_INFOP(keynote1_i,"W60l6",&el_main_first,&el_sched_cnt,keynote1_str,schedule_root);
+char keynote2_str[] M2_SECTION_PROGMEM ="\"It Ain't Rocket\nScience\"\n\nDavid Mortman";
+M2_INFOP(keynote2_i,"W60l6",&el_main_first,&el_sched_cnt,keynote2_str,schedule_root);
+char talk1_str[] M2_SECTION_PROGMEM = "\"Crowdsourcing\nYour Cisco\nFirewalls\"\n\nClaudius\nGuay";
+M2_INFOP(talk1_i,"W60l6",&el_main_first,&el_sched_cnt,talk1_str,schedule_root);
+char talk2_str[] M2_SECTION_PROGMEM = "\"Just What The\nDoctor Ordered?\"\n\nScott Erven";
+M2_INFOP(talk2_i,"W60l6",&el_main_first,&el_sched_cnt,talk2_str,schedule_root);
+char break_str[] M2_SECTION_PROGMEM = "DRINK BEER\n\nEAT FOODS";
+M2_INFOP(break_i,"W60l6",&el_main_first,&el_sched_cnt,break_str,schedule_root);
+char talk3_str[] M2_SECTION_PROGMEM = "\"The Perfectly\nLegitimate\nProject\"\n\nO'Connor\nDobbe";
+M2_INFOP(talk3_i,"W60l6",&el_main_first,&el_sched_cnt,talk3_str,schedule_root);
+char talk4_str[] M2_SECTION_PROGMEM = "Introducing idb\n\nDaniel A. Mayer";
+M2_INFOP(talk4_i,"W60l6",&el_main_first,&el_sched_cnt,talk4_str,schedule_root);
+char talk5_str[] M2_SECTION_PROGMEM = "Surveilling IP\nCamera Security\n\nMark Stanislov";
+M2_INFOP(talk5_i,"W60l6",&el_main_first,&el_sched_cnt,talk5_str,schedule_root);
+char talk6_str[] M2_SECTION_PROGMEM = "\"Phishing Frenzy\"\n\nMcCann\nRingwood";
+M2_INFOP(talk6_i,"W60l6",&el_main_first,&el_sched_cnt,talk6_str,schedule_root);
+char talk7_str[] M2_SECTION_PROGMEM = "\"Breaking Bus\nTickets\"\n\nMike Jackson";
+M2_INFOP(talk7_i,"W60l6",&el_main_first,&el_sched_cnt,talk7_str,schedule_root);
+char brew_str[] M2_SECTION_PROGMEM = "HACKER BREW\n\nCONTEST RESULTS";
+M2_INFOP(brew_i, "W60l6",&el_main_first,&el_sched_cnt,brew_str,schedule_root);
+char turbo1_str[] M2_SECTION_PROGMEM = "\"Digital Attacks\nin the\nPhysical Realm\"\n\nGrape Ape";
+M2_INFOP(turbo1_i,"W60l6",&el_main_first,&el_sched_cnt,turbo1_str,schedule_root);
+char turbo2_str[] M2_SECTION_PROGMEM = "\"Wireless Drone\nStrikes\"\n\nParker Schmitt";
+M2_INFOP(turbo2_i,"W60l6",&el_main_first,&el_sched_cnt,turbo2_str,schedule_root);
+char turbo3_str[] M2_SECTION_PROGMEM = "\"Poking Through\nto the Heart\nof a Binday\"\n\nwhistlepig";
+M2_INFOP(turbo3_i,"W60l6",&el_main_first,&el_sched_cnt,turbo3_str,schedule_root);
+char turbo4_str[] M2_SECTION_PROGMEM = "\"Retroactive\nWiretapping\"\n\nJohn Bambenek";
+M2_INFOP(turbo4_i,"W60l6",&el_main_first,&el_sched_cnt,turbo4_str,schedule_root);
+char turbo5_str[] M2_SECTION_PROGMEM = "\"Your Personal\nInformation\nIs Online?\"\n\nwhitehat1969";
+M2_INFOP(turbo5_i,"W60l6",&el_main_first,&el_sched_cnt,turbo5_str,schedule_root);
+char turbo6_str[] M2_SECTION_PROGMEM = "\"Electronic Device\nSearches\nat the Border\"\n\nMerrill";
+M2_INFOP(turbo6_i,"W60l6",&el_main_first,&el_sched_cnt,turbo6_str,schedule_root);
+char turbo7_str[] M2_SECTION_PROGMEM = "\"P.I.S.S.E.D\"\n\nJoe Cicero";
+M2_INFOP(turbo7_i,"W60l6",&el_main_first,&el_sched_cnt,turbo7_str,schedule_root);
+char turbo8_str[] M2_SECTION_PROGMEM = "\"Traits Between\nA Soc Eng & a\nSociopath\"\n\nJ. Singleton";
+M2_INFOP(turbo8_i,"W60l6",&el_main_first,&el_sched_cnt,turbo8_str,schedule_root);
+char turbo9_str[] M2_SECTION_PROGMEM = "\"10 Commandments\n of IR\n (For Hackers)\"\n\nLesley Carhart";
+M2_INFOP(turbo9_i,"W60l6",&el_main_first,&el_sched_cnt,turbo9_str,schedule_root);
+char turbo10_str[] M2_SECTION_PROGMEM = "\"Yelling at\nmanagement...\"\n\nAlex Muentz";
+M2_INFOP(turbo10_i,"W60l6",&el_main_first,&el_sched_cnt,turbo10_str,schedule_root);
+char turbo11_str[] M2_SECTION_PROGMEM = "\"Bypassing EMET 4.1\"\n\nJared DeMott";
+M2_INFOP(turbo11_i,"W60l6",&el_main_first,&el_sched_cnt,turbo11_str,schedule_root);
+
+
+m2_menu_entry schedule_data[] = 
+{
+  { "TRACK ONE", NULL },
+  { ". 0830 - DOORS", &el_schedule },
+  { ". 0945 - WELCOME.0", &welcome1_i },
+  { ". 1000 - KEYNOTE.1", &keynote1_i },
+  { ". 1100 - TALK.1", &talk1_i },
+  { ". 1200 - TALK.2", &talk2_i },
+  { ". 1300 - BREAK", &break_i},
+  { ". 1400 - TALK.3", &talk3_i },
+  { ". 1500 - KEYNOTE.2", &keynote2_i},
+  { ". 1600 - TALK.4", &talk4_i},
+  { ". 1700 - BREAK", &break_i},
+  { ". 1730 - TALK.5", &talk5_i},
+  { ". 1830 - TALK.6", &talk6_i},
+  { ". 1930 - TALK.7", &talk7_i},
+  { ". 2030 - BREW", &brew_i},
+  { ". 2100 - CLOSING", &el_schedule },
+  { ". 2120 - SYS64738", &el_schedule},
+  { "TRACK 2", NULL },
+  { ". 1100 - TURBO.1", &turbo1_i},
+  { ". 1130 - TURBO.2", &turbo2_i},
+  { ". 1200 - TURBO.3", &turbo3_i},
+  { ". 1230 - TURBO.4", &turbo4_i},
+  { ". 1300 - BREAK", &break_i},
+  { ". 1400 - TURBO.5", &turbo5_i},
+  { ". 1430 - TURBO.6", &turbo6_i},
+  { ". 1500 - TURBO.7", &turbo7_i},
+  { ". 1530 - BREAK", &break_i},
+  { ". 1600 - TURBO.8", &turbo8_i},
+  { ". 1630 - TURBO.9", &turbo9_i},
+  { ". 1700 - TURBO.10", &turbo10_i},
+  { ". 1730 - TURBO.11", &turbo11_i},
+  { ". 1800 - ./SHUTDOWN", &el_schedule},
+  { "LABS", &el_schedule },
+  { ". 0900 - LAB.1", NULL},
+  { ". 1000 - LAB.2", NULL},
+  { ". 1100 - LAB.3", NULL},
+  { ". 1200 - LAB.4", NULL},
+  { ". 1300 - BREAK", &break_i},
+  { ". 1400 - LAB.5/6", NULL},
+  { ". 1630 - BREAK", &break_i},
+  { ". 1700 - LAB.7", NULL},
+  { ". 1800 - LAB.8", NULL},
+  { ". 1900 - ./SHUTDOWN", &el_schedule},
+  { "VILLAGE", &el_schedule},
+  { "PARTY", &el_schedule},
+  {NULL, NULL},
+};
+
+
+
+
 M2_2LMENU(el_schedule, "e5l6w100", &schedule_first, &schedule_cnt, schedule_data, 43, 45, '\0'); 
 //M2_VSB(el_schedule_vsb, "l6W4r1", &schedule_first, &schedule_cnt);
 //M2_LIST(list_schedule) = {&el_schedule,&el_schedule_vsb};
 //M2_HLIST(el_schedule_hlist, NULL, list_schedule);
 M2_STRLIST(el_main, "l6w100", &el_main_first, &el_main_cnt, el_main_getstr);
-M2_INFOP(el_welcome_info, "W60l6", (uint8_t *) 1, (uint8_t *) 1, welcome, schedule_root);
+//M2_INFOP(el_welcome_info, "W60l6", (uint8_t *) 1, (uint8_t *) 1, welcome, schedule_root);
 M2tk m2(&el_main, m2_es_arduino, m2_eh_4bs, m2_gh_u8g_bfs);
 
 uint8_t state;
