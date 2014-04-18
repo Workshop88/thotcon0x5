@@ -4,13 +4,11 @@ U8GLIB_DOGS102 u8g(17,11); //leonardo
 unsigned long next_sec_time;
 uint8_t fps, frame_cnt;
 
-int sensorPin = 0;  // analog input
-
 // configuration values
-uint8_t uiKeyLeftPin = 30;
-uint8_t uiKeyRightPin = 1;
-uint8_t uiMinIncrement = 2*8;
-uint8_t uiMaxIncrement = 4*8;
+uint8_t uiKeyLeftPin = 1;
+uint8_t uiKeyRightPin = 30;
+uint8_t uiKeyUpPin = 0;
+uint8_t uiKeyDownPin = 4;
 
 //copied from some other sketch
 //uint8_t uiKeyPrev = 4;
@@ -19,13 +17,6 @@ uint8_t uiMaxIncrement = 4*8;
 //uint8_t uiKeyBack = 6;
 //uint8_t uiKeyRight = 1;
 //uint8_t uiKeyLeft = 30;
-
-// output values
-uint8_t playerLocation = 0;
-
-// internal values
-uint8_t isKeyPad = 0;
-uint8_t uiActualIncrement = 2*8;
 
 
 
@@ -38,6 +29,8 @@ uint8_t uiActualIncrement = 2*8;
 
 
 #include <stdio.h>
+
+#define DEBUG_MANUAL 1
 
 #define DISPLAY_HEIGHT 64
 
@@ -54,23 +47,52 @@ uint8_t uiActualIncrement = 2*8;
 #define BO_AREA_WIDTH 7
 #define BO_AREA_HEIGHT 3
 
+#define AREA_WIDTH 7
+#define AREA_HEIGHT 3
+
 #define BO_BRICK_WIDTH ( (int16_t)10 << BO_FP )
 #define BO_BRICK_HEIGHT ( (int16_t)4 << BO_FP )
 
 #define BRICK_WIDTH 10
 #define BRICK_HEIGHT 4
 
-#define BALL_WIDTH 4
-#define BALL_HEIGHT 4
+#define BALL_START_X 1
+#define BALL_START_Y 4
+
+#define BALL_SIZE 4
+
+#define BALL_SIZE_HALF 2
 
 #define BO_AREA_UNIT_X ( BO_BRICK_WIDTH + ( (int16_t)4 << BO_FP ) )
 #define BO_AREA_UNIT_Y ( BO_BRICK_HEIGHT + ( (int16_t)4 << BO_FP ) )
 #define BO_AREA_ORIG_X ( (int16_t)2 << BO_FP )
 #define BO_AREA_ORIG_Y ( (int16_t)(DISPLAY_HEIGHT - 32) << BO_FP )
 
+#define AREA_UNIT_X ( BRICK_WIDTH + 4 )
+#define AREA_UNIT_Y ( BRICK_HEIGHT + 4 )
+#define AREA_ORIG_X 2
+#define AREA_ORIG_Y ( DISPLAY_HEIGHT - 32 )
+
 /* dimensions of the overall game field (BO_FP units) */
 #define BO_FIELD_WIDTH ( BO_AREA_ORIG_X + BO_AREA_UNIT_X * BO_AREA_WIDTH )
 #define BO_FIELD_HEIGHT ( BO_AREA_ORIG_Y + BO_AREA_UNIT_Y * BO_AREA_HEIGHT )
+
+#define FIELD_WIDTH ( AREA_ORIG_X + AREA_UNIT_X * AREA_WIDTH )
+#define FIELD_HEIGHT ( AREA_ORIG_Y + AREA_UNIT_Y * AREA_HEIGHT )
+
+#define PLAYER_Y0 1
+#define PLAYER_Y1 3
+
+#define PLAYER_WIDTH 21
+#define PLAYER_HEIGHT 3
+
+#define PLAYER_WIDTH_HALF 10
+#define PLAYER_HEIGHT_HALF 2
+
+#define PLAYER_MAX_X FIELD_WIDTH - PLAYER_WIDTH
+
+#define PLAYER_X_ACCELERATION_FP ( 1 << BO_FP )
+#define PLAYER_MAX_X_VELOCITY_FP ( 4 << BO_FP )
 
 /* pixel values */
 #define BO_FIELD_X0 2
@@ -120,18 +142,30 @@ struct bo_player
   int16_t x1;	/* fixed point 12.4 */
   int16_t y0;   /* fixed point 12.4 */
   int16_t y1;   /* fixed point 12.4 */
+  
+  int16_t xv;
 };
 
 /*================================================================*/
 /* global variables */
 /*================================================================*/
 
-
 uint8_t bo_area[BO_AREA_HEIGHT][BO_AREA_WIDTH];
 int16_t bo_player_brick_points; /* only written to... could  be removed */
 int16_t bo_remaining_bricks;
 int16_t bo_no_reflection_cnt = 0;
 
+bo_player bo_player_obj;
+uint8_t bo_step_state;
+uint8_t bo_timer;
+uint8_t bo_level;
+
+#define BO_STATE_IN_GAME 1
+#define BO_STATE_LOST 2
+#define BO_STATE_RESTART 3
+#define BO_STATE_COMLETED 4
+#define BO_STATE_INTRO 5
+#define BO_STATE_INTRO1 6
 
 
 
@@ -155,57 +189,37 @@ void uiSetup(void) {
   digitalWrite(uiKeyLeftPin, HIGH);       // turn on pullup resistors
   pinMode(uiKeyRightPin, INPUT);           // set pin to input
   digitalWrite(uiKeyRightPin, HIGH);       // turn on pullup resistors
-  // configure internal variables
-  isKeyPad = 0;
-  // assign some (more or less) useful values to the output variables
-  playerLocation = 127;
 }
 
 // calculate new output values
 void uiStep(void) {
   uint8_t is_key_pressed = 0;
-  uint8_t real_inc;
-  if ( isKeyPad == 0 )
-  {
-    int sensorValue;
-    // assume, that no keypad is used and derive the location from analog input
-    sensorValue = analogRead(sensorPin);
-    sensorValue >>= 2;
-    playerLocation = sensorValue;
-    // now check if some keys are pressed
-    if ( digitalRead(uiKeyLeftPin) == LOW )
-      isKeyPad = 1;
-    if ( digitalRead(uiKeyRightPin) == LOW )
-      isKeyPad = 1;
+  
+  if ( digitalRead(uiKeyLeftPin) == LOW ) {
+    is_key_pressed = 1;
+    bo_player_obj.xv = max( -PLAYER_MAX_X_VELOCITY, bo_player_obj.xv - PLAYER_X_ACCELERATION );
   }
-  if ( isKeyPad != 0 )
-  {
-    real_inc = uiActualIncrement;
-    real_inc >>= 3;
-    if ( digitalRead(uiKeyLeftPin) == LOW )
-    {
-      is_key_pressed = 1;
-      if ( playerLocation <= 255 -  real_inc )
-	playerLocation += real_inc;
-    }
-    if ( digitalRead(uiKeyRightPin) == LOW )
-    {
-      is_key_pressed = 1;
-      if ( playerLocation >= 0+  real_inc )
-	playerLocation -= real_inc;
-    }
-    if ( is_key_pressed == 0 )
-    {
-      uiActualIncrement = uiMinIncrement;
-    }
-    else
-    {
-      if ( uiActualIncrement < uiMaxIncrement )
-	uiActualIncrement++;
+  
+  if ( digitalRead(uiKeyRightPin) == LOW ) {
+    is_key_pressed = 1;
+    bo_player_obj.xv = min( PLAYER_MAX_X_VELOCITY, bo_player_obj.xv + PLAYER_X_ACCELERATION );
+  }
+    if ( digitalRead(uiKeyUpPin) == LOW ) {
+    is_key_pressed = 1;
+  }
+  
+  if ( digitalRead(uiKeyDownPin) == LOW ) {
+    is_key_pressed = 1;
+  }
+  
+  if ( is_key_pressed == 0 ) {
+    if ( bo_player_obj.xv > 0 ) {
+      bo_player_obj.xv -= PLAYER_X_ACCELERATION;
+    } else if ( bo_player_obj.xv < 0 ) {
+      bo_player_obj.xv += PLAYER_X_ACCELERATION;
     }
   }
 }
-
 
 void setup() {
   ///u8g.setRot180();
@@ -219,20 +233,19 @@ void setup() {
 }
 
 void loop() {
-  u8g.firstPage();  
+  u8g.firstPage();
+  
   do {
     bo_Draw();
     bo_DrawFPS(fps);
   } while( u8g.nextPage() );
   
-  
   uiStep();
-  bo_SetX(playerLocation);
+  bo_SetPlayerPos( &bo_player_obj );
   bo_Step();  
   
   frame_cnt++;
-  if ( next_sec_time < millis() )
-  {
+  if ( next_sec_time < millis() ) {
     fps = frame_cnt;
     frame_cnt = 0;
     next_sec_time = millis() + 1000UL;
@@ -246,26 +259,14 @@ void loop() {
 
 
 
-void bo_DrawFPS(uint8_t fps) {
-  
-}
+
+
+
 
 
 /*================================================================*/
 /* API */
 /*================================================================*/
-
-bo_player bo_player_obj;
-uint8_t bo_step_state;
-uint8_t bo_timer;
-uint8_t bo_level;
-
-#define BO_STATE_IN_GAME 1
-#define BO_STATE_LOST 2
-#define BO_STATE_RESTART 3
-#define BO_STATE_COMLETED 4
-#define BO_STATE_INTRO 5
-#define BO_STATE_INTRO1 6
 
 void bo_Draw() {
     draw_bricks();
@@ -304,67 +305,58 @@ void bo_Draw() {
     */
 }
 
-void bo_SetX(uint8_t pos) {
-  bo_SetPlayerPos(&bo_player_obj, pos);
+void bo_Step(void) {
+  if ( bo_no_reflection_cnt >= 3 ) {
+    bo_no_reflection_cnt-=3;
+  }
+  else {
+    bo_no_reflection_cnt=0;
+  }
+  
+  switch(bo_step_state) {
+    case BO_STATE_INTRO:
+      bo_step_state = BO_STATE_INTRO1;
+      bo_timer = 127;
+      break;
+    case BO_STATE_INTRO1:
+      bo_timer--;
+      if ( bo_timer == 0 ) {
+        bo_step_state = BO_STATE_IN_GAME;
+      }
+      break;
+    case BO_STATE_IN_GAME:
+      bo_DoBallStep( &bo_ball1_obj, &bo_player_obj );
+      bo_DoBallStep( &bo_ball2_obj, &bo_player_obj );
+      bo_DoBallStep( &bo_ball3_obj, &bo_player_obj );
+      if ( bo_ball1_obj.is_ball_lost != 0 && bo_ball2_obj.is_ball_lost != 0  && bo_ball3_obj.is_ball_lost != 0 ) {
+        bo_step_state = BO_STATE_LOST;
+        bo_timer = 80;
+      }
+      if ( bo_remaining_bricks == 0 ) {
+        bo_step_state = BO_STATE_COMLETED;
+        bo_timer = 80;
+      }
+      break;
+    case BO_STATE_LOST:
+      bo_timer--;
+      if ( bo_timer == 0 ) {
+        bo_step_state = BO_STATE_RESTART;
+      }
+      break;
+    case BO_STATE_RESTART:
+      bo_step_state = BO_STATE_IN_GAME;
+      bo_Setup(0);
+      break;
+    case BO_STATE_COMLETED:
+      bo_timer--;
+      if ( bo_timer == 0 ) {
+        bo_step_state = BO_STATE_IN_GAME;
+        bo_Setup( bo_level + 1 );
+      }
+  }
 }
 
-void bo_Step(void)
-{
-    if ( bo_no_reflection_cnt >= 3 )
-    {
-      bo_no_reflection_cnt-=3;
-    }
-    else
-    {
-      bo_no_reflection_cnt=0;
-    }
-    switch(bo_step_state)
-    {
-      case BO_STATE_INTRO:
-	  bo_step_state = BO_STATE_INTRO1;
-	  bo_timer = 127;
-	break;
-      case BO_STATE_INTRO1:
-	bo_timer--;
-	if ( bo_timer == 0 )
-	  bo_step_state = BO_STATE_IN_GAME;
-	break;
-      case BO_STATE_IN_GAME:
-	bo_DoBallStep(&bo_ball1_obj, &bo_player_obj);
-	bo_DoBallStep(&bo_ball2_obj, &bo_player_obj);
-	bo_DoBallStep(&bo_ball3_obj, &bo_player_obj);
-	if ( bo_ball1_obj.is_ball_lost != 0 && bo_ball2_obj.is_ball_lost != 0  && bo_ball3_obj.is_ball_lost != 0 )
-	{
-	  bo_step_state = BO_STATE_LOST;
-	  bo_timer = 80;
-	}
-	if ( bo_remaining_bricks == 0 )
-	{
-	  bo_step_state = BO_STATE_COMLETED;
-	  bo_timer = 80;
-	}
-	break;
-      case BO_STATE_LOST:
-	bo_timer--;
-	if ( bo_timer == 0 )
-	  bo_step_state = BO_STATE_RESTART;
-	break;
-      case BO_STATE_RESTART:
-	bo_step_state = BO_STATE_IN_GAME;
-	bo_Setup(0);
-	break;
-      case BO_STATE_COMLETED:
-	bo_timer--;
-	if ( bo_timer == 0 )
-	{
-	  bo_step_state = BO_STATE_IN_GAME;
-	  bo_Setup(bo_level+1);
-	}
-    }
-}
-
-void bo_Setup(uint8_t level)
-{
+void bo_Setup(uint8_t level) {
   /* level = 4; */
   bo_no_reflection_cnt = 0;
   bo_level = level;
@@ -381,31 +373,27 @@ void bo_Setup(uint8_t level)
     bo_step_state = BO_STATE_IN_GAME;
 }
 
-
-
-
 /*================================================================*/
 /* setup */
 /*================================================================*/
 
-void bo_CalcRemainingBricks(void)
-{
-  int w,h;
-  int x,y;
+void bo_CalcRemainingBricks() {
+  int w, h;
+  int x, y;
+  
   bo_remaining_bricks = 0;
   w = BO_AREA_WIDTH;
   h = BO_AREA_HEIGHT;
-  for( y = 0; y < h; y++)
-  {
-    for( x = 0; x < w; x++)
-    {
+  
+  for( y = 0; y < h; y++ ) {
+    for( x = 0; x < w; x++ ) {
       if ( bo_area[y][x] == BO_BRICK_NORMAL || bo_area[y][x] == BO_BRICK_BALL || bo_area[y][x] == BO_BRICK_NO_REFLECTION )
 	bo_remaining_bricks++;
     }
   }
 }
 
-void bo_SetupLevel(uint8_t level) {
+void bo_SetupLevel( uint8_t level ) {
   int x, y;
   
   for( y = 0; y < BO_AREA_HEIGHT; y++) {
@@ -417,8 +405,7 @@ void bo_SetupLevel(uint8_t level) {
   bo_CalcRemainingBricks();
 }
 
-void bo_SetupBall(struct bo_ball *b)
-{
+void bo_SetupBall( struct bo_ball *b ) {
   b->dx = ( 1 << BO_FP ) / 2;
   b->dy = ( 1 << BO_FP ) / 2;
   b->x0 = ( 1 << BO_FP );
@@ -434,27 +421,28 @@ void bo_SetupBall(struct bo_ball *b)
 }
 
 /* pos is between 0 and 255 */
-void bo_SetPlayerPos( struct bo_player *p, uint8_t pos )
-{
+void bo_SetPlayerPos( struct bo_player *p  ) {
   uint8_t tmp;
-  tmp = ( ( BO_FIELD_WIDTH - p->w - BO_FP ) >> BO_FP ) ;
-  tmp = (uint8_t)( ( (uint16_t)tmp * (uint16_t)pos ) / 255 );
-  p->x0 = ( (int16_t)tmp ) << BO_FP;
-  p->x1 = p->x0 + p->w;
-  p->y0 = (int16_t)1 << BO_FP;
-  p->y1 = (int16_t)3 << BO_FP;
+  
+  //tmp = ( ( BO_FIELD_WIDTH - p->w - BO_FP ) >> BO_FP ) ;
+  //tmp = (uint8_t)( ( (uint16_t)tmp * (uint16_t)pos ) / 255 );
+  //p->x0 = ( (int16_t)tmp ) << BO_FP;
+  //p->x1 = p->x0 + p->w;
+  
+  p->_x0 += p->xv;
+  p->_x1 = p->_x0 + PLAYER_WIDTH;
+  p->x0 += ( p->xv << BO_FP );
+  p->x1 += ( p->xv << BO_FP );
 }
 
-void bo_SetupPlayer( struct bo_player *p )
-{
+void bo_SetupPlayer( struct bo_player *p ) {
   p->w = (int16_t)22 * (int16_t)( 1 << BO_FP );
-  bo_SetPlayerPos( p, 128 );
+  ///bo_SetPlayerPos( p, 128 );
 }
 
 /*================================================================*/
 /* graphics */
 /*================================================================*/
-
 
 void draw_bricks() {
   int x, y;
@@ -478,63 +466,63 @@ void draw_brick(uint8_t ox, uint8_t oy, uint8_t brick_status) {
   int h = BRICK_HEIGHT;
   
   switch(brick_status) {
-	case BO_BRICK_NORMAL:
-	  u8g.drawBox( ox, oy, w, h );
-	  return;
-	case BO_BRICK_SOLID:
-	  u8g.drawBox( ox, oy, w, h );
-          u8g.setColorIndex(0);
-	  u8g.drawBox( ox + 1, oy + 1, w - 2, h - 2 );
-          u8g.setColorIndex(1);
-	  return;
-	case BO_BRICK_BALL:
-	  u8g.drawBox( ox, oy, w, h );
-          u8g.setColorIndex(0);
-	  u8g.drawVLine( ox + 2, oy + 1, oy + 3 );
-	  u8g.drawPixel( ox + 1, oy + 2 );
-	  u8g.drawPixel( ox + 3, oy + 2 );
-          u8g.setColorIndex(1);
-	  return;
-	case BO_BRICK_NO_REFLECTION:
-	  {
-	    const unsigned char b[1] = { 0xaa };
-	    ///dog_SetBox(ox, oy, ox+w, oy+h);
-	    ///dog_ClrHLine(ox, ox+4, oy);
-	    ///dog_SetHBitmap(ox, oy, b, 5); 
-	    ///dog_ClrHLine(ox, ox+4, oy+h);
-	    ///dog_SetHBitmap(ox, oy+h, b, 5); 
-	    ///dog_ClrHLine(ox+w-4, ox+w, oy);
-	    ///dog_SetHBitmap(ox+w-4, oy, b, 5); 
-	    ///dog_ClrHLine(ox+w-4, ox+w, oy+h);
-	    ///dog_SetHBitmap(ox+w-4, oy+h, b, 5); 
-	  }
-	  return;
-	case BO_BRICK_CLOSE_START:
-	  ///dog_SetBox(ox-2, oy+1, ox+w+2, oy+h);
-	  return;
-	case BO_BRICK_CLOSE2:
-	  ///dog_SetBox(ox-3, oy+1, ox+w+3, oy+h);
-	  return;
-	case BO_BRICK_CLOSE3:
-	  ///dog_SetBox(ox-4, oy+1, ox+w+4, oy+h-1);
-	  return;
-	case BO_BRICK_CLOSE4:
-	  ///dog_SetBox(ox-5, oy+1, ox+w+5, oy+h-1);
-	  return;
-	case BO_BRICK_CLOSE5:
-	  ///dog_SetBox(ox-6, oy+1, ox+w+6, oy+h-1);
-	  return;
-	case BO_BRICK_CLOSE6:
-	  ///dog_SetBox(ox-7, oy+2, ox+w+7, oy+h-1);
-	  return;
-	case BO_BRICK_CLOSE7:
-	  ///dog_SetBox(ox-8, oy+2, ox+w+8, oy+h-1);
-	  return;
-	case BO_BRICK_CLOSE8:
-	  ///dog_SetBox(ox-9, oy+2, ox+w+9, oy+h-1);
-	  return;
-	default:
-	  return;
+    case BO_BRICK_NORMAL:
+      u8g.drawBox( ox, oy, w, h );
+      return;
+    case BO_BRICK_SOLID:
+      u8g.drawBox( ox, oy, w, h );
+      u8g.setColorIndex(0);
+      u8g.drawBox( ox + 1, oy + 1, w - 2, h - 2 );
+      u8g.setColorIndex(1);
+      return;
+    case BO_BRICK_BALL:
+      u8g.drawBox( ox, oy, w, h );
+      u8g.setColorIndex(0);
+      u8g.drawVLine( ox + 2, oy + 1, oy + 3 );
+      u8g.drawPixel( ox + 1, oy + 2 );
+      u8g.drawPixel( ox + 3, oy + 2 );
+      u8g.setColorIndex(1);
+      return;
+    case BO_BRICK_NO_REFLECTION:
+      {
+      const unsigned char b[1] = { 0xaa };
+      ///dog_SetBox(ox, oy, ox+w, oy+h);
+      ///dog_ClrHLine(ox, ox+4, oy);
+      ///dog_SetHBitmap(ox, oy, b, 5); 
+      ///dog_ClrHLine(ox, ox+4, oy+h);
+      ///dog_SetHBitmap(ox, oy+h, b, 5); 
+      ///dog_ClrHLine(ox+w-4, ox+w, oy);
+      ///dog_SetHBitmap(ox+w-4, oy, b, 5); 
+      ///dog_ClrHLine(ox+w-4, ox+w, oy+h);
+      ///dog_SetHBitmap(ox+w-4, oy+h, b, 5); 
+      }
+      return;
+    case BO_BRICK_CLOSE_START:
+      u8g.drawBox( ox - 2, oy + 1, w + 2, h );
+      return;
+    case BO_BRICK_CLOSE2:
+      u8g.drawBox( ox - 3, oy + 1, w + 3, h );
+      return;
+    case BO_BRICK_CLOSE3:
+      u8g.drawBox( ox - 4, oy + 1, w + 4, h - 1 );
+      return;
+    case BO_BRICK_CLOSE4:
+      u8g.drawBox( ox - 5, oy + 1, w + 5, h - 1 );
+      return;
+    case BO_BRICK_CLOSE5:
+      u8g.drawBox( ox - 6, oy + 1, w + 6, h - 1 );
+      return;
+    case BO_BRICK_CLOSE6:
+      u8g.drawBox( ox - 7, oy + 2, w + 7, h - 1 );
+      return;
+    case BO_BRICK_CLOSE7:
+      u8g.drawBox( ox - 8, oy + 2, w + 8, h - 1 );
+      return;
+    case BO_BRICK_CLOSE8:
+      u8g.drawBox( ox - 9, oy + 2, w + 9, h - 1 );
+      return;
+    default:
+      return;
   }
 }
 
@@ -542,7 +530,7 @@ void draw_ball( struct bo_ball *b ) {
   if ( b->is_ball_lost )
     return;
   
-  u8g.drawBox( ( b->x0 >> BO_FP ) + BO_FIELD_X0, ( b->y0 >> BO_FP ) + BO_FIELD_Y0, BALL_WIDTH, BALL_HEIGHT );
+  u8g.drawBox( ( b->x0 >> BO_FP ) + BO_FIELD_X0, ( b->y0 >> BO_FP ) + BO_FIELD_Y0, BALL_SIZE, BALL_SIZE );
 }
 
 void draw_player( struct bo_player *p ) {
@@ -550,22 +538,42 @@ void draw_player( struct bo_player *p ) {
   
   ox = p->x0 >> BO_FP;
   oy = p->y0 >> BO_FP;
-  ox += BO_FIELD_X0;
-  oy += BO_FIELD_Y0;
-  
   w = p->w >> BO_FP;
   h = ( p->y1 - p->y0 ) >> BO_FP;
   
   u8g.drawBox( ox, oy, w, h );
+  
+  
+  
+  ox = p->_x0;// + BO_FIELD_X0;
+  oy = PLAYER_Y0 + BO_FIELD_Y0;
+  
+  u8g.drawBox( ox, oy, PLAYER_WIDTH, PLAYER_HEIGHT );
 }
 
+void bo_DrawFPS( uint8_t fps ) {
+  if ( fps > 0 ) {
+    ///dog_DrawStr(85, DOG_HEIGHT-8, BO_F1, dog_itoa(fps));
+  }
+}
 
+void draw_field( uint8_t level ) {
+  uint8_t x;
+  
+  ///dog_SetVLine(BO_FIELD_X0, BO_FIELD_Y0, BO_FIELD_Y1);
+  ///dog_SetVLine(BO_FIELD_X1-1, BO_FIELD_Y0, BO_FIELD_Y1);
+  ///x = dog_DrawStr(4, DOG_HEIGHT-8, BO_F1, dog_itoa(bo_remaining_bricks));
+  ///x = dog_DrawStrP(25, DOG_HEIGHT-8, BO_F1, DOG_PSTR("level"));
+  ///dog_DrawStr(x+2+25, DOG_HEIGHT-8, BO_F1, dog_itoa(level+1));
 
+  if ( bo_no_reflection_cnt > 0 ) {
+    ///dog_DrawStr(x+2+25+15, DOG_HEIGHT-8, BO_F1, dog_itoa((bo_no_reflection_cnt>>8)+1));
+  }
+}
 
 /*================================================================*/
 /* aux functions */
 /*================================================================*/
-
 
 uint8_t bo_IsIntersection( int16_t a_min, int16_t a_max, int16_t b_min, int16_t b_max) {
   if ( a_max < b_min )
@@ -733,6 +741,13 @@ void bo_CheckBrickArea( struct bo_ball *b ) {
 
 /*===== field intersection =====*/
 
+void nudgeBall( struct bo_ball *b, int16_t dx, int16_t dy ) {
+  //b->_x0 += dx;
+  //b->_x1 += dx;
+  //b->_y0 += dy;
+  //b->_y1 += dy;
+}
+
 void bo_CheckField(bo_ball *b) {
   uint8_t is_reflection = 0;
   
@@ -832,6 +847,7 @@ void bo_DoDeltaLimit( struct bo_ball *b ) {
   if ( b->dx >= ( 1 << BO_FP ) ) {
     b->dx = ( 1 << BO_FP );
   }
+  
   if ( b->dy >= ( 1 << ( BO_FP - 1 ) ) ) {
     b->dy = ( 1 << ( BO_FP - 1 ) );
   }
@@ -855,13 +871,16 @@ void bo_DoBallStep( struct bo_ball *b, struct bo_player *p ) {
   
   b->is_ball_reflection = 0;
   bo_CheckBrickArea(b);
+  
   if ( b->is_ball_reflection == 0 ) {
     bo_CheckField(b);
+    
     if ( b->is_ball_reflection == 0 ) {
       if ( p != NULL )
-	bo_CheckPlayer(b, p);
+        bo_CheckPlayer(b, p);
     }
-  }  
+  }
+  
   if ( b->is_ball_reflection != 0 ) {
     bo_DoBallDelta(b);
   }
