@@ -1,7 +1,7 @@
 #include "U8glib.h"
 #include <EEPROM.h>
 
-
+/*
 U8GLIB_DOGS102 u8g(0,4); //teesy 
 uint8_t uiKeyPrev = 17;
 uint8_t uiKeyNext = 18;
@@ -10,9 +10,9 @@ uint8_t uiKeyBack = 15;
 uint8_t uiKeyRight = 20;
 uint8_t uiKeyLeft = 19;
 uint8_t led = 11;
+*/
 
 
-/*
 U8GLIB_DOGS102 u8g(17,11); //PROTO BOARD
 //Leonardo based pin assignements must have updated pins_arduino.h for pin 30
 uint8_t uiKeyPrev = 4;
@@ -22,7 +22,7 @@ uint8_t uiKeyBack = 6;
 uint8_t uiKeyRight = 30;
 uint8_t uiKeyLeft = 1;
 uint8_t led = 3;
-*/
+
 
 #define DEBUG 1
 
