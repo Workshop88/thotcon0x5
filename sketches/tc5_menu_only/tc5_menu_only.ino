@@ -6,24 +6,6 @@
 #define L_FONT_HEIGHT 10
 #define L_FONT_LENGTH 17 //printable characters per line
 
-U8GLIB_DOGS102 u8g(0,4); //teesy 
-uint8_t uiKeyPrev = 17;
-uint8_t uiKeyNext = 18;
-uint8_t uiKeySelect = 14;
-uint8_t uiKeyBack = 15;
-uint8_t uiKeyRight = 19;
-uint8_t uiKeyLeft = 20;
-
-
-/* U8GLIB_DOGS102 u8g(17,11); //PROTO BOARD
-//Leonardo based pin assignements must have updated pins_arduino.h for pin 30
-uint8_t uiKeyPrev = 4;
-uint8_t uiKeyNext = 0;
-uint8_t uiKeySelect = 12;
-uint8_t uiKeyBack = 6;
-uint8_t uiKeyRight = 1;
-uint8_t uiKeyLeft = 30;
-*/
 
 //Key States
 #define KEY_NONE 0
@@ -45,12 +27,39 @@ uint8_t uiKeyLeft = 30;
 #define VILLAGE_STATE (SCHED_STATE << 7)
 #define PARTY_STATE 5
 
+//menu global strings and consts for draw states and such
+#define MENU_ITEMS 5
+#define TRACK1_ITEMS 16
+#define TRACK2_ITEMS 13
+#define LAB_ITEMS 7
+#define VILLAGE_ITEMS 7
+
+U8GLIB_DOGS102 u8g(0,4); //teesy 
+uint8_t uiKeyPrev = 17;
+uint8_t uiKeyNext = 18;
+uint8_t uiKeySelect = 14;
+uint8_t uiKeyBack = 15;
+uint8_t uiKeyRight = 19;
+uint8_t uiKeyLeft = 20;
+
+
+/* U8GLIB_DOGS102 u8g(17,11); //PROTO BOARD
+//Leonardo based pin assignements must have updated pins_arduino.h for pin 30
+uint8_t uiKeyPrev = 4;
+uint8_t uiKeyNext = 0;
+uint8_t uiKeySelect = 12;
+uint8_t uiKeyBack = 6;
+uint8_t uiKeyRight = 1;
+uint8_t uiKeyLeft = 30;
+*/
+
+
 uint8_t uiKeyCodeFirst = KEY_NONE;
 uint8_t uiKeyCodeSecond = KEY_NONE;
 uint8_t uiKeyCode = KEY_NONE;
 
 void uiSetup(void) {
-  // initialize input keys , look to optimize w/ straig reg manipulation
+  // initialize input keys , look to optimize w/ straight reg manipulation
   
   pinMode(uiKeyPrev, INPUT);           // set pin to input
   digitalWrite(uiKeyPrev, HIGH);       // turn on pullup resistors
@@ -82,11 +91,8 @@ void uiStep(void) { // optimize out digitalRead
     uiKeyCode = KEY_NONE;
 }
 
-//menu global strings and consts for draw states and such
-#define MENU_ITEMS 5
-#define TRACK1_ITEMS 16
-#define TRACK2_ITEMS 13
-#define LAB_ITEMS 10
+
+
 const char mm1_str[] PROGMEM = "Game";
 const char mm2_str[] PROGMEM = "Schedule";
 const char mm3_str[] PROGMEM = "GameLink";
@@ -130,17 +136,14 @@ const char _2t11t_str[] PROGMEM = "1700";
 const char _2t12t_str[] PROGMEM = "1730";
 const char _2t13t_str[] PROGMEM = "1800";
 const char *track2_time_str[TRACK2_ITEMS] PROGMEM = {_2t1t_str,_2t2t_str,_2t3t_str,_2t4t_str,_2t5t_str,_2t6t_str,_2t7t_str,_2t8t_str,_2t9t_str,_2t10t_str,_2t11t_str,_2t12t_str,_2t13t_str};  
-const char lt1_str[] PROGMEM = "0900";
-const char lt2_str[] PROGMEM = "1000";
 const char lt3_str[] PROGMEM = "1100";
 const char lt4_str[] PROGMEM = "1200";
 const char lt5_str[] PROGMEM = "1300";
 const char lt6_str[] PROGMEM = "1400";
-const char lt7_str[] PROGMEM = "1630";
+const char lt7_str[] PROGMEM = "1600";
 const char lt8_str[] PROGMEM = "1700";
 const char lt9_str[] PROGMEM = "1800";
-const char lt10_str[] PROGMEM = "1900";
-const char *lab_time_str[LAB_ITEMS] PROGMEM = {lt1_str,lt2_str,lt3_str,lt4_str,lt5_str,lt6_str,lt7_str,lt8_str,lt9_str,lt10_str};
+const char *lab_time_str[LAB_ITEMS] PROGMEM = {lt3_str,lt4_str,lt5_str,lt6_str,lt7_str,lt8_str,lt9_str};
 const char _1t1tl_str[] PROGMEM = "DOORS";
 const char _1t2tl_str[] PROGMEM = "HELLO";
 const char _1t3tl_str[] PROGMEM = "UFOs\n and \nGovernment";
@@ -163,13 +166,13 @@ const char _1t2n_str[] PROGMEM = "c7five";
 const char _1t3n_str[] PROGMEM = "Richard Thieme";
 const char _1t4n_str[] PROGMEM = "Claudius && Guay";
 const char _1t5n_str[] PROGMEM = "Scott Erven";
-const char _1t6n_str[] PROGMEM = "DRINK BEER / EAT FOODS";
+const char _1t6n_str[] PROGMEM = "DRINK BEER \n EAT FOODS";
 const char _1t7n_str[] PROGMEM = "O'Connor && Dobbe";
 const char _1t8n_str[] PROGMEM = "David Mortman";
 const char _1t9n_str[] PROGMEM = "Daniel A. Mayer";
-const char _1t10n_str[] PROGMEM = "DRINK MORE BEER / EAT MORE FOOD";
+const char _1t10n_str[] PROGMEM = "DRINK MORE BEER \n EAT MORE FOOD";
 const char _1t11n_str[] PROGMEM = "Mark Stanislov";
-const char _1t12n_str[] PROGMEM = "McCann && Ringwood";
+const char _1t12n_str[] PROGMEM = "McCann \n Ringwood";
 const char _1t13n_str[] PROGMEM = "Mike Jackson";
 const char _1t14n_str[] PROGMEM = "CONTEST RESULTS";
 const char _1t15n_str[] PROGMEM = "REMARKS";
@@ -193,39 +196,48 @@ const char _2t1n_str[] PROGMEM = "Grape Ape";
 const char _2t2n_str[] PROGMEM = "Parker Schmitt";
 const char _2t3n_str[] PROGMEM = "whistlepig";
 const char _2t4n_str[] PROGMEM = "John Bbenek";
-const char _2t5n_str[] PROGMEM = "DRINK BEER / EAT FOODS";
+const char _2t5n_str[] PROGMEM = "DRINK BEER \n EAT FOODS";
 const char _2t6n_str[] PROGMEM = "whitehat1969";
 const char _2t7n_str[] PROGMEM = "Merrill";
 const char _2t8n_str[] PROGMEM = "Joe Cicero";
-const char _2t9n_str[] PROGMEM = "DRINK MORE BEER / EAT MORE FOODS";
+const char _2t9n_str[] PROGMEM = "DRINK MORE BEER \n EAT MORE FOODS";
 const char _2t10n_str[] PROGMEM = "J. Singleton";
 const char _2t11n_str[] PROGMEM = "Lesley Carhart";
 const char _2t12n_str[] PROGMEM = "Alex Muentz";
 const char _2t13n_str[] PROGMEM = "Jared DeMott";
 const char *track2_name_str[TRACK2_ITEMS] PROGMEM = {_2t1n_str,_2t2n_str,_2t3n_str,_2t4n_str,_2t5n_str,_2t6n_str,_2t7n_str,_2t8n_str,_2t9n_str,_2t10n_str,_2t11n_str,_2t12n_str,_2t13n_str};
-const char lab1tl_str[] PROGMEM = "Call Me Maybe, \nIPv6" ;
 const char lab2tl_str[] PROGMEM = "Breaking\nEncryption\nw/ Oscilloscopes";
 const char lab3tl_str[] PROGMEM = "Building a GPU\nCracking Rig";
 const char lab4tl_str[] PROGMEM = "Synthetic Mobile\nMalware Analysis";
-const char lab5tl_str[] PROGMEM = "BREAK";
 const char lab6tl_str[] PROGMEM = "The Cavalry is Us";
-const char lab7tl_str[] PROGMEM = "BREAK";
 const char lab8tl_str[] PROGMEM = "Hardware\nHacking for\nCheap Dummies";
 const char lab9tl_str[] PROGMEM = "Targeted Malware";
 const char lab10tl_str[] PROGMEM = "";
-const char *lab_title_str[LAB_ITEMS] PROGMEM = {lab1tl_str,lab2tl_str,lab3tl_str,lab4tl_str,lab5tl_str,lab6tl_str,lab7tl_str,lab8tl_str,lab9tl_str,lab10tl_str};
-const char lab1n_str[] PROGMEM = "Joe Klein";
+const char *lab_title_str[LAB_ITEMS] PROGMEM = {lab2tl_str,lab3tl_str,lab4tl_str,lab6tl_str,lab8tl_str,lab9tl_str,lab10tl_str};
 const char lab2n_str[] PROGMEM = "Duehr && Balducci";
 const char lab3n_str[] PROGMEM = "Fosaaen && Gruber";
 const char lab4n_str[] PROGMEM = "David Shaw";
-const char lab5n_str[] PROGMEM = "DRINK BEER / EAT FOODS";
 const char lab6n_str[] PROGMEM = "Brand && Erven \n Corman";
-const char lab7n_str[] PROGMEM = "DRINK BEER / EAT FOODS";
 const char lab8n_str[] PROGMEM = "Kevin Bong";
 const char lab9n_str[] PROGMEM = "wartortell \n fuzzynop";
 const char lab10n_str[] PROGMEM = "./SHUTDOWN";
-const char *lab_name_str[LAB_ITEMS] PROGMEM = {lab1n_str,lab2n_str,lab3n_str,lab4n_str,lab5n_str,lab6n_str,lab7n_str,lab8n_str,lab9n_str,lab10n_str};
-   
+const char *lab_name_str[LAB_ITEMS] PROGMEM = {lab2n_str,lab3n_str,lab4n_str,lab6n_str,lab8n_str,lab9n_str,lab10n_str};
+const char vt1_str[] PROGMEM = "Table 0";
+const char vt2_str[] PROGMEM = "Table 1";
+const char vt3_str[] PROGMEM = "Table 2";
+const char vt4_str[] PROGMEM = "Table 3";
+const char vt5_str[] PROGMEM = "Table 4";
+const char vt6_str[] PROGMEM = "Table 5";
+const char vt7_str[] PROGMEM = "Table 6";
+const char *village_time_str[VILLAGE_ITEMS] PROGMEM = {vt1_str,vt2_str,vt3_str,vt4_str,vt5_str,vt6_str,vt7_str};   
+const char v1tl_str[] PROGMEM = "Workshop 88" ;
+const char v2tl_str[] PROGMEM = "Hackers\n for\n Charity ";
+const char v3tl_str[] PROGMEM = "Lock Pick \nVillage";
+const char v4tl_str[] PROGMEM = "HACKER BREW\nCONTEST";
+const char v5tl_str[] PROGMEM = "OWASP";
+const char v6tl_str[] PROGMEM = "Circle City Con";
+const char v7tl_str[] PROGMEM = "The Cavalry";
+const char *village_title_str[VILLAGE_ITEMS] PROGMEM = {v1tl_str,v2tl_str,v3tl_str,v4tl_str,v5tl_str,v6tl_str,v7tl_str};
  
 uint8_t menu_current = 0;
 uint8_t menu_redraw = 0;
@@ -285,10 +297,10 @@ void drawMenuInfo(){
          title_str = lab_title_str;
          name_str = lab_name_str;
          break;
-      default: 
+      case VILLAGE_STATE: 
         track = 3;
-        time_str = track1_time_str;
-        title_str = track1_title_str;
+        time_str = village_time_str;
+        title_str = village_title_str;
         name_str = track1_name_str;
       break;
   }
@@ -313,7 +325,7 @@ void drawMenuInfo(){
          ptr = (uint16_t)pgm_read_word(&title_str[info_current]);
          do
          {
-           trimmed[pos++] = (char) pgm_read_byte(ptr) ;
+           trimmed[pos++] = (char) pgm_read_byte(ptr) ; //there should be bounds checking here but we control the strings beware stack corruption
            if ((char) pgm_read_byte(ptr++) == '\0') break;
            if ((char) pgm_read_byte(ptr) == '\n'){         
              #if defined DEBUG
@@ -336,34 +348,36 @@ void drawMenuInfo(){
      u8g.drawStrP(d,2*L_FONT_HEIGHT+1,(const u8g_uint_t*)pgm_read_word(&title_str[info_current]));
      }
     //Speaker
-    /* if (u8g.getStrWidthP((u8g_uint_t*)pgm_read_word(&name_str[info_current])) > DISPLAY_WIDTH )
+     if (u8g.getStrWidthP((u8g_uint_t*)pgm_read_word(&name_str[info_current])) > DISPLAY_WIDTH )
      //string too long, trim and print
      {
-         uint8_t pos = 0;
-         
-         uint16_t ptr = (uint16_t)pgm_read_word(&name_str[info_current]);
+         pos = 0;
+         ptr = (uint16_t)pgm_read_word(&name_str[info_current]);
          do
          {
-           trimmed[pos++] = (char) pgm_read_byte(ptr) ;
+           trimmed[pos++] = (char) pgm_read_byte(ptr) ; //there should be bounds checking here but we control the strings beware stack corruption
            if ((char) pgm_read_byte(ptr++) == '\0') break;
-           if ( pos >  L_FONT_LENGTH ){         
+           if ((char) pgm_read_byte(ptr) == '\n'){         
              #if defined DEBUG
              Serial.println(trimmed);
              #endif
-             
-             u8g.drawStr(0,line*L_FONT_HEIGHT,trimmed);
+             trimmed[pos] = '\0';
+             d = (DISPLAY_WIDTH - u8g.getStrWidth(trimmed))/2;
+             u8g.drawStr(d,line*L_FONT_HEIGHT,trimmed);
              pos = 0;
              line++;
+             ptr++;
            }
          } while (pgm_read_byte(ptr) != '\0' );
          trimmed[pos] = '\0';
          d = (DISPLAY_WIDTH - u8g.getStrWidth(trimmed))/2;
          u8g.drawStr(d,line*L_FONT_HEIGHT,trimmed);
      }
-     else { */
+     else {
+     if (global_state == VILLAGE_STATE) continue;
      d = (DISPLAY_WIDTH-u8g.getStrWidthP((u8g_uint_t*)pgm_read_word(&name_str[info_current])))/2;
      u8g.drawStrP(d,5*L_FONT_HEIGHT,(const u8g_uint_t*)pgm_read_word(&name_str[info_current]));
-    // }
+     }
   } while( u8g.nextPage() );
  
 }
@@ -405,7 +419,7 @@ void updateMenu(void) {
     case TRACK_ONE_STATE: max_items = TRACK1_ITEMS; break;
     case TRACK_TWO_STATE: max_items = TRACK2_ITEMS; break;
     case LABS_STATE:  max_items = LAB_ITEMS; break;
-    case VILLAGE_STATE: max_items = MENU_ITEMS; break;
+    case VILLAGE_STATE: max_items = VILLAGE_ITEMS; break;
     default: max_items = MENU_ITEMS; break;
   }
   switch ( uiKeyCode ) {
