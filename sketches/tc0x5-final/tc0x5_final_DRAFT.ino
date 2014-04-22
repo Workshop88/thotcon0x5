@@ -1,7 +1,7 @@
 #include "U8glib.h"
 #include <EEPROM.h>
 
-/*
+///*
 U8GLIB_DOGS102 u8g(0,4); //teesy 
 uint8_t uiKeyPrev = 17;
 uint8_t uiKeyNext = 18;
@@ -10,9 +10,9 @@ uint8_t uiKeyBack = 15;
 uint8_t uiKeyRight = 20;
 uint8_t uiKeyLeft = 19;
 uint8_t led = 11;
-*/
+//*/
 
-
+/*
 U8GLIB_DOGS102 u8g(17,11); //PROTO BOARD
 //Leonardo based pin assignements must have updated pins_arduino.h for pin 30
 uint8_t uiKeyPrev = 4;
@@ -22,7 +22,7 @@ uint8_t uiKeyBack = 6;
 uint8_t uiKeyRight = 30;
 uint8_t uiKeyLeft = 1;
 uint8_t led = 3;
-
+*/
 
 #define DEBUG 1
 
@@ -33,6 +33,13 @@ uint8_t led = 3;
 #define VOICE_BADGE 1
 //#define VIP_BADGE 1
 //#define ROOT_BADGE 1  //****
+
+/* Tweak here for idle time, this determines when the badge draws and sleeps
+   IDLE_MS should be left below 25 (~human reaction time).
+   IDLE_SCALE should be (Target Time)/IDLE_MS
+*/
+#define IDLE_MS 15
+#define IDLE_SCALE 2000
 
 #define DISPLAY_WIDTH 102
 #define L_FONT_HEIGHT 10
@@ -157,6 +164,7 @@ uint8_t led = 3;
 uint8_t uiKeyCodeFirst = KEY_NONE;
 uint8_t uiKeyCodeSecond = KEY_NONE;
 uint8_t uiKeyCode = KEY_NONE;
+uint16_t uiIdleCount = 0;
 
 struct bo_ball {
   int16_t dx;	/* fixed point 12.4 */
@@ -209,12 +217,12 @@ byte bo_level;
 #define BO_STATE_INTRO 5
 #define BO_STATE_INTRO1 6
 
-#define DEFINED_LEVELS 2
+#define DEFINED_LEVELS 4
 #define L ( 1 + ( 3 << 2 ) )
 
-byte levels[][ 7 * 3 ] = { { L, L, L, L, L, L, L,
-                            L, L, L, L, L, L, L,
-                            L, L, L, L, L, L, L } }; 
+ byte levels[][ 7 * 3 ] = { {  64,  84,  80, 209,  80,  84,  64,
+                               64,  84,  68, 197,  68,  84,  64,
+                               64, 213, 209, 209, 209, 213,  64 } };
                           /*{ 1, 1, 1, 1, 1, 1, 1,
                                 1, 1, 1, 1, 1, 1, 1,
                                 1, 1, 1, 1, 1, 1, 1 }, 
@@ -340,7 +348,11 @@ void bo_Step(void) {
         
       bo_CalcRemainingBricks();
       
-      if ( bo_remaining_bricks == 0 ) {
+      if ( bo_remaining_bricks == 0 
+           #if defined(DEBUG)
+           || digitalRead(uiKeySelect) == LOW
+           #endif 
+           ) {
         bo_step_state = BO_STATE_COMPLETED;
         bo_timer = 80;
       }
@@ -1393,11 +1405,11 @@ const char _1t2n_str[] PROGMEM = "c7five";
 const char _1t3n_str[] PROGMEM = "Richard Thieme";
 const char _1t4n_str[] PROGMEM = "Claudius && Guay";
 const char _1t5n_str[] PROGMEM = "Scott Erven";
-const char _1t6n_str[] PROGMEM = "DRINK BEER \n EAT FOODS";
+const char _1t6n_str[] PROGMEM = " DRINK BEER\nEAT FOODS ";
 const char _1t7n_str[] PROGMEM = "O'Connor && Dobbe";
 const char _1t8n_str[] PROGMEM = "David Mortman";
 const char _1t9n_str[] PROGMEM = "Daniel A. Mayer";
-const char _1t10n_str[] PROGMEM = "DRINK MORE BEER \n EAT MORE FOOD";
+const char _1t10n_str[] PROGMEM = " DRINK MORE BEER\nEAT MORE FOOD ";
 const char _1t11n_str[] PROGMEM = "Mark Stanislov";
 const char _1t12n_str[] PROGMEM = "McCann \n Ringwood";
 const char _1t13n_str[] PROGMEM = "Mike Jackson";
@@ -1417,17 +1429,17 @@ const char _2t9tl_str[] PROGMEM = "BREAK";
 const char _2t10tl_str[] PROGMEM = "Traits Between\nA Soc Eng\n& a Sociopath";
 const char _2t11tl_str[] PROGMEM = "10 Commandments\nof IR\n(For Hackers)";
 const char _2t12tl_str[] PROGMEM = "Yelling at\nmanagement...";
-const char _2t13tl_str[] PROGMEM = "Bypassing\n  EMET 4.1";
+const char _2t13tl_str[] PROGMEM = " Bypassing\n EMET 4.1";
 const char *track2_title_str[TRACK2_ITEMS] PROGMEM = {_2t1tl_str,_2t2tl_str,_2t3tl_str,_2t4tl_str,_2t5tl_str,_2t6tl_str,_2t7tl_str,_2t8tl_str,_2t9tl_str,_2t10tl_str,_2t11tl_str,_2t12tl_str,_2t13tl_str};
 const char _2t1n_str[] PROGMEM = "Grape Ape";
 const char _2t2n_str[] PROGMEM = "Parker Schmitt";
 const char _2t3n_str[] PROGMEM = "whistlepig";
-const char _2t4n_str[] PROGMEM = "John Bbenek";
-const char _2t5n_str[] PROGMEM = "DRINK BEER \n EAT FOODS";
+const char _2t4n_str[] PROGMEM = "John Bambenek";
+const char _2t5n_str[] PROGMEM = "DRINK BEER\nEAT FOODS";
 const char _2t6n_str[] PROGMEM = "whitehat1969";
 const char _2t7n_str[] PROGMEM = "Merrill";
 const char _2t8n_str[] PROGMEM = "Joe Cicero";
-const char _2t9n_str[] PROGMEM = "DRINK MORE BEER \n EAT MORE FOODS";
+const char _2t9n_str[] PROGMEM = "DRINK MORE BEER\nEAT MORE FOODS";
 const char _2t10n_str[] PROGMEM = "J. Singleton";
 const char _2t11n_str[] PROGMEM = "Lesley Carhart";
 const char _2t12n_str[] PROGMEM = "Alex Muentz";
@@ -1444,9 +1456,9 @@ const char *lab_title_str[LAB_ITEMS] PROGMEM = {lab2tl_str,lab3tl_str,lab4tl_str
 const char lab2n_str[] PROGMEM = "Duehr && Balducci";
 const char lab3n_str[] PROGMEM = "Fosaaen && Gruber";
 const char lab4n_str[] PROGMEM = "David Shaw";
-const char lab6n_str[] PROGMEM = "Brand && Erven \n Corman";
+const char lab6n_str[] PROGMEM = "Brand && Erven\nCorman";
 const char lab8n_str[] PROGMEM = "Kevin Bong";
-const char lab9n_str[] PROGMEM = "wartortell \n fuzzynop";
+const char lab9n_str[] PROGMEM = "wartortell\n fuzzynop";
 const char lab10n_str[] PROGMEM = "./SHUTDOWN";
 const char *lab_name_str[LAB_ITEMS] PROGMEM = {lab2n_str,lab3n_str,lab4n_str,lab6n_str,lab8n_str,lab9n_str,lab10n_str};
 const char vt1_str[] PROGMEM = "Table 0";
@@ -1575,6 +1587,7 @@ void drawMenuInfo(){
      u8g.drawStrP(d,2*L_FONT_HEIGHT+1,(const u8g_uint_t*)pgm_read_word(&title_str[info_current]));
      }
     //Speaker
+     if (global_state == VILLAGE_STATE) continue;
      if (u8g.getStrWidthP((u8g_uint_t*)pgm_read_word(&name_str[info_current])) > DISPLAY_WIDTH )
      //string too long, trim and print
      {
@@ -1583,11 +1596,12 @@ void drawMenuInfo(){
          do
          {
            trimmed[pos++] = (char) pgm_read_byte(ptr) ; //there should be bounds checking here but we control the strings beware stack corruption
-           if ((char) pgm_read_byte(ptr++) == '\0') break;
+           if ((char) pgm_read_byte(ptr++) == '\0'){
+                        
+             break;
+           }
            if ((char) pgm_read_byte(ptr) == '\n'){         
-             #if defined DEBUG
-             Serial.println(trimmed);
-             #endif
+            
              trimmed[pos] = '\0';
              d = (DISPLAY_WIDTH - u8g.getStrWidth(trimmed))/2;
              u8g.drawStr(d,line*L_FONT_HEIGHT,trimmed);
@@ -1597,11 +1611,16 @@ void drawMenuInfo(){
            }
          } while (pgm_read_byte(ptr) != '\0' );
          trimmed[pos] = '\0';
+         #if defined DEBUG
+         Serial.println(trimmed);
+         Serial.println(line);
+         #endif 
          d = (DISPLAY_WIDTH - u8g.getStrWidth(trimmed))/2;
          u8g.drawStr(d,line*L_FONT_HEIGHT,trimmed);
+        
+         line = 3;
      }
      else {
-     if (global_state == VILLAGE_STATE) continue;
      d = (DISPLAY_WIDTH-u8g.getStrWidthP((u8g_uint_t*)pgm_read_word(&name_str[info_current])))/2;
      u8g.drawStrP(d,5*L_FONT_HEIGHT,(const u8g_uint_t*)pgm_read_word(&name_str[info_current]));
      }
@@ -1625,6 +1644,8 @@ void draw_link()
       Keyboard.end();
       digitalWrite(led,LOW);
    }
+        Keyboard.end();
+      digitalWrite(led,LOW);
   //delay(3000);
 }
 
@@ -1639,7 +1660,7 @@ void draw_reg()
   #endif
   u8g.firstPage();
   do {
-    u8g.drawStrP(1, L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("Register Here:"));
+    u8g.drawStrP(12, L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("Register Here:"));
     u8g.drawLine(0,2*L_FONT_HEIGHT,DISPLAY_WIDTH,2*L_FONT_HEIGHT);
      u8g.drawStrP(8,4*L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("< NEED URL >"));
     uint8_t d = (DISPLAY_WIDTH - u8g.getStrWidth(ID_str))/2;
@@ -1648,6 +1669,22 @@ void draw_reg()
   
   
   //delay(3000);
+}
+
+void draw_party(){
+    u8g.setFont(u8g_font_6x12r);
+    u8g.setFontRefHeightText();
+    u8g.setFontPosTop();
+   u8g.firstPage();
+  do {
+    u8g.drawStrP(12, 0,(const u8g_pgm_uint8_t*)PSTR("AFTERPARTY"));
+    u8g.drawStrP(0,L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("Saturday 4/26"));
+    u8g.drawLine(0,3*L_FONT_HEIGHT,DISPLAY_WIDTH,3*L_FONT_HEIGHT);
+    u8g.drawStrP(2,4*L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("56 W Illinois St"));
+    u8g.drawStrP(2,5*L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("Chicago, IL 60654"));
+    
+  } while (u8g.nextPage() ); 
+  delay(3000);
 }
 
 void draw_icon()
@@ -1736,8 +1773,7 @@ void help_SOS() //optimize candidate
 void menu_state()
 {
     #if defined(DEBUG)
-    Serial.print("G_state: ");
-    Serial.println(global_state);
+    Serial.print("G_state: "); Serial.println(global_state);
     Serial.print("Menu_curr: "); Serial.println(menu_current);
     Serial.print("Info_curr: "); Serial.println(info_current);
     #endif
@@ -1746,14 +1782,12 @@ void menu_state()
     case SCHED_STATE: menu_redraw = 1; drawMenu(sched_menu_str); menu_redraw = 0; break;
     case LINK_STATE: draw_link(); break;
     case REG_STATE: draw_reg(); break;
-    case HELP_STATE:help_SOS(); break;
+    case HELP_STATE:menu_redraw = 1; help_SOS(); break;
     case TRACK_ONE_STATE:
     case TRACK_TWO_STATE:
     case LABS_STATE:  
-    case VILLAGE_STATE:
-    case PARTY_STATE:
-      drawMenuInfo();
-      break;
+    case VILLAGE_STATE: drawMenuInfo(); break;
+    case PARTY_STATE: draw_party(); break;
     default: drawMenu(main_menu_str); break;
   }
     return;
@@ -1827,6 +1861,7 @@ void updateMenu(void) {
 }
 
 void setup() {
+  ADCSRA = 0; //disable analog block
   USBCON|=(1<<OTGPADE); //enables VBUS pad
   // rotate screen, if required
   u8g.setRot180();
@@ -1845,8 +1880,26 @@ void setup() {
 
 void loop() {  
 
-  uiStep();                                     // check for key press
-    
+  uiStep();                  // check for key press
+  if (uiKeyCode == KEY_NONE)
+  {
+         uiIdleCount++;
+         delay(IDLE_MS); // wait a very short period to help calculate idleness
+         #if defined (DEBUG)
+         Serial.print("Idle count: ");Serial.println(uiIdleCount);
+         #endif
+  }
+  else {
+    uiIdleCount = 0;
+  }
+  if (uiIdleCount > IDLE_SCALE ) //idle > 30 sec
+  {
+    u8g.undoRotation();
+    draw_icon();
+    u8g.setRot180();
+    uiIdleCount = 0;
+  }
+  
   if (  menu_redraw != 0 ) {
  
       menu_state();
