@@ -9,6 +9,7 @@ uint8_t uiKeyLeftPin = 1;
 uint8_t uiKeyRightPin = 30;
 uint8_t uiKeyUpPin = 0;
 uint8_t uiKeyDownPin = 4;
+uint8_t uiKeySelect = 12;
 
 //copied from some other sketch
 //uint8_t uiKeyPrev = 4;
@@ -164,12 +165,12 @@ byte bo_level;
 #define BO_STATE_INTRO 5
 #define BO_STATE_INTRO1 6
 
-#define DEFINED_LEVELS 2
+#define DEFINED_LEVELS 4
 #define L ( 1 + ( 3 << 2 ) )
 
-byte levels[][ 7 * 3 ] = { { L, L, L, L, L, L, L,
-                            L, L, L, L, L, L, L,
-                            L, L, L, L, L, L, L } }; 
+byte levels[][ 7 * 3 ] = { {  64,  84,  80, 209,  80,  84,  64,
+                              64,  84,  68, 197,  68,  84,  64,
+                              64, 213, 209, 209, 209, 213,  64 } }; 
                           /*{ 1, 1, 1, 1, 1, 1, 1,
                                 1, 1, 1, 1, 1, 1, 1,
                                 1, 1, 1, 1, 1, 1, 1 }, 
@@ -336,7 +337,7 @@ void bo_Step(void) {
         
       bo_CalcRemainingBricks();
       
-      if ( bo_remaining_bricks == 0 ) {
+      if ( bo_remaining_bricks == 0 || digitalRead(uiKeySelect) == LOW ) {
         bo_step_state = BO_STATE_COMPLETED;
         bo_timer = 80;
       }
