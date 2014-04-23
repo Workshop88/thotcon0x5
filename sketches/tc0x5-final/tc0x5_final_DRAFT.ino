@@ -2130,10 +2130,23 @@ void draw_help(){
 
 void danceParty(){
 
- uiIdleCount = 0;
- while (uiIdleCount < 30)
+ 
+ while (uiKeyCode != KEY_BACK)
  {
-    uiStep(); 
+   uiStep();                  // check for key press
+   if (uiKeyCode == KEY_NONE)
+   {
+         uiIdleCount++;
+         delay(IDLE_MS); // wait a very short period to help calculate idleness  
+   }
+   else {
+    uiIdleCount = 0;
+   }
+  if (uiIdleCount > IDLE_SCALE ) //idle > 30 sec
+  { 
+    return;
+  }
+   
     switch ( uiKeyCode ) {
 
       case KEYLEFT:  
@@ -2141,31 +2154,25 @@ void danceParty(){
             do {
                u8g.drawBitmapP(2, 0, 12, 64, l_dance);
             } while (u8g.nextPage() );
-      break;
+            break;
       case KEYRIGHT: 
             u8g.firstPage();
             do {
                u8g.drawBitmapP(2, 0, 12, 64, r_dance);
             }while (u8g.nextPage() );
-         break;
+            break;
+      case KEY_BACK: return; break;
       default: 
             u8g.firstPage();
             do {
                u8g.drawBitmapP(15, 0, 9, 64, u_dance);
             } while (u8g.nextPage() );
-      break;
-    }
-    if (uiKeyCode == KEY_NONE)
-    {
-         uiIdleCount++;
-         delay(IDLE_MS); // wait a very short period to help calculate idleness  
-    }
-    else {
-    uiIdleCount = 0;
-  }
- }
- 
-}
+            break;
+    } //case
+
+  }  // while
+    
+} //danceParty
 
 void help_SOS() //optimize candidate
 {
