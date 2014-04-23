@@ -34,11 +34,11 @@ char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 
 /*select one badge type for compile*/
 
-//#define HACKER_BADGE 1  //****
-//#define OPER_BADGE 1
-#define VOICE_BADGE 1
-//#define VIP_BADGE 1
-//#define ROOT_BADGE 1  //****
+//#define HACKER_BADGE 1  //BLACK
+//#define OPER_BADGE 1    //RED
+#define VOICE_BADGE 1     //BLUE
+//#define VIP_BADGE 1     //GREEN
+//#define ROOT_BADGE 1     //GOLD
 
 /* Tweak here for idle time, this determines when the badge draws and sleeps
    IDLE_MS should be left below 25 (~human reaction time).
@@ -47,6 +47,8 @@ char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 #define IDLE_MS 15
 #define IDLE_SCALE 2000
 #define IDLE_BYTE 100
+
+#define SCORE_BYTE 200
 
 #define DISPLAY_WIDTH 102
 #define L_FONT_HEIGHT 10
@@ -283,6 +285,14 @@ void bo_loop() {
     bo_SetPlayerPos( &bo_player_obj );
     bo_Step();
   }  
+  u8g.firstPage();
+  
+    do {
+      bo_Draw();
+      bo_DrawFPS(fps);
+    } while( u8g.nextPage() );
+  
+   EEPROM.write(SCORE_BYTE,bo_player_brick_points);
 }
 
 /*================================================================*/
@@ -290,6 +300,7 @@ void bo_loop() {
 /*================================================================*/
 
 void bo_Draw() {
+    char points[45];
     draw_bricks();
     draw_ball(&bo_ball1_obj);
     draw_ball(&bo_ball2_obj);
@@ -297,33 +308,31 @@ void bo_Draw() {
     draw_player(&bo_player_obj);
     ///draw_field(bo_level);
     
-    /*
+    
     if ( bo_step_state == BO_STATE_INTRO1 )
     {
-      DOG_PSTR_P s1 = DOG_PSTR("THOTCON 0x5");
-      DOG_PSTR_P s2 = DOG_PSTR(BO_BUILD);
-      s16 o = ((dog_sin(((s16)bo_timer)*3))/21);
-      u8 w;
+      u8g.setRot180();
+      u8g.drawStrP(20,4*L_FONT_HEIGHT, (const u8g_pgm_uint8_t*)PSTR("THOTCON 0x5"));
+      u8g.undoRotation();
       
-      w = dog_GetStrWidthP(BO_F2, s1);
-      dog_DrawStrP(BO_FIELD_X0 + (BO_FIELD_PIX_WIDTH-w)/2, 18+o, BO_F2, s1);
-      
-      w = dog_GetStrWidthP(BO_F2, s2);
-      dog_DrawStrP(BO_FIELD_X0 + (BO_FIELD_PIX_WIDTH-w)/2, 10+o, BO_F2, s2);
     }
     if ( bo_step_state == BO_STATE_LOST )
     {
-      DOG_PSTR_P s = DOG_PSTR("Game Over");
-      u8 w = dog_GetStrWidthP(BO_F3, s);
-      dog_DrawStrP(BO_FIELD_X0 + (BO_FIELD_PIX_WIDTH-w)/2, 10+(bo_timer>>4), BO_F3, s);
+      itoa(bo_player_brick_points , points, 10);
+      u8g.setRot180();
+      u8g.drawStrP(24,3*L_FONT_HEIGHT, (const u8g_pgm_uint8_t*)PSTR("GAME OVER"));
+      u8g.drawStrP(24,4*L_FONT_HEIGHT, (const u8g_pgm_uint8_t*)PSTR("SCORE: "));
+      u8g.drawStr(70,4*L_FONT_HEIGHT, points);
+      u8g.undoRotation();
     }
     if ( bo_step_state == BO_STATE_COMPLETED )
     {
-      DOG_PSTR_P s = DOG_PSTR("Completed");
-      u8 w = dog_GetStrWidthP(BO_F3, s);
-      dog_DrawStrP(BO_FIELD_X0 + (BO_FIELD_PIX_WIDTH-w)/2, 20-(bo_timer>>4), BO_F3, s);
+
+      u8g.setRot180();
+      u8g.drawStrP(24,4*L_FONT_HEIGHT, (const u8g_pgm_uint8_t*)PSTR("COMPLETE!"));
+      u8g.undoRotation();
     }
-    */
+    
 }
 
 void bo_Step(void) {
@@ -2003,7 +2012,8 @@ void draw_reg()
   do {
     u8g.drawStrP(12, L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("Register Here:"));
     u8g.drawLine(0,2*L_FONT_HEIGHT,DISPLAY_WIDTH,2*L_FONT_HEIGHT);
-     u8g.drawStrP(8,4*L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("< NEED URL >"));
+     u8g.drawStrP(20,2*L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("badges (dot)"));
+     u8g.drawStrP(8,3*L_FONT_HEIGHT,(const u8g_pgm_uint8_t*)PSTR("workshop88.com"));
     uint8_t d = (DISPLAY_WIDTH - u8g.getStrWidth(ID_str))/2;
     u8g.drawStr(d,5*L_FONT_HEIGHT,ID_str);
   } while (u8g.nextPage() );
@@ -2197,7 +2207,7 @@ void menu_state()
     case GAME_STATE:  u8g.undoRotation(); bo_loop(); u8g.setRot180();  break;
     case SCHED_STATE: menu_redraw = 1; drawMenu(sched_menu_str); menu_redraw = 0; break;
     case LINK_STATE: draw_link(); break;
-    case REG_STATE: draw_icon(qr); break;
+    case REG_STATE: /*draw_icon(qr);*/ draw_reg(); break;
     case HELP_STATE:menu_redraw = 1; draw_help(); help_SOS(); menu_redraw=0; break;
     case TRACK_ONE_STATE:
     case TRACK_TWO_STATE:
