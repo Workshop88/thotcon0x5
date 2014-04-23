@@ -1,7 +1,7 @@
 #include "U8glib.h"
 #include <EEPROM.h>
 
-///*
+/*
 U8GLIB_DOGS102 u8g(0,4); //teesy 
 uint8_t uiKeyPrev = 17;
 uint8_t uiKeyNext = 18;
@@ -10,9 +10,9 @@ uint8_t uiKeyBack = 15;
 uint8_t uiKeyRight = 20;
 uint8_t uiKeyLeft = 19;
 uint8_t led = 11;
-//*/
+*/
 
-/*
+
 U8GLIB_DOGS102 u8g(17,11); //PROTO BOARD
 //Leonardo based pin assignements must have updated pins_arduino.h for pin 30
 uint8_t uiKeyPrev = 4;
@@ -22,7 +22,6 @@ uint8_t uiKeyBack = 6;
 uint8_t uiKeyRight = 30;
 uint8_t uiKeyLeft = 1;
 uint8_t led = 3;
-*/
 
 int isPlayer1 = 1;
 char inputs[6] = { 0x04, 0x01, 0x00, 0x1E, 0x06, 0x0C };
@@ -82,7 +81,26 @@ char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 
 #define DEBUG_MANUAL 1
 
+/*=============================================================*/
+/* UUGear defines */
+/*=============================================================*/
 #define DISPLAY_HEIGHT 64
+#include <EEPROM.h>
+
+#define BAUD_RATE  115200
+
+#define EEPROM_SIZE  1024
+
+#define ID_PREFIX  "UUGear-Arduino-"
+
+#define COMMAND_START_CHAR  'U'
+#define COMMAND_END_STRING  "\r\n"
+#define cmdEndStrLen 2
+
+#define RESPONSE_START_CHAR  '\t'
+#define RESPONSE_END_STRING  ":)"
+
+String cmdBuf = "";
 
 /*================================================================*/
 /* breaker definitions and structures */
@@ -1984,14 +2002,89 @@ void drawMenuInfo(){
  
 }
 
+// read ID from EEPROM
+String getID() {
+  String id = F("");
+  for (int i = 0; i < EEPROM_SIZE; i ++) {
+    int value = EEPROM.read(i);
+    if (value == 0xFF) {
+      return id;
+    }
+    id += char(value);
+  }
+  return id;
+}
+
+// generate ID and save it into EEPROM
+void generateID() {
+  randomSeed(analogRead(0));
+  int part1 = random(1000, 10000);
+  int part2 = random(1000, 10000);
+  String id = String(F(ID_PREFIX)) + String(part1) + F("-") + String(part2);
+  int len = id.length();
+  for (int i = 0; i < EEPROM_SIZE; i ++) {
+    EEPROM.write(i, i < len ? id.charAt(i) : 0xFF);
+  }
+}
+
+// process the command
+void processCommand(String cmd) {
+  //logAsHex(cmd);
+  if (cmd.length() > 3) {
+    byte cmdId = cmd.charAt(1);
+    switch(cmdId) {
+    case 0x30:
+      cmdGetID(cmd);
+      break;
+/*    case 0x31:
+      cmdPinModeOutput(cmd);
+      break;
+    case 0x32:
+      cmdPinModeInput(cmd);
+      break;
+    case 0x33:
+      cmdSetPinUp(cmd);
+      break;
+    case 0x34:
+      cmdSetPinDown(cmd);
+      break;
+    case 0x35:
+      cmdGetPinStatus(cmd);
+      break;
+    case 0x36:
+      cmdAnalogWrite(cmd);
+      break;
+    case 0x37:
+      cmdAnalogRead(cmd);
+      break;
+    case 0x50:
+      cmdReadDHT11(cmd);
+*/
+    }
+  }
+}
+
+// command to retrive the ID
+// example: 55 30 01 0D 0A
+void cmdGetID(String cmd) {
+  if (cmd.length() > 4) {
+    byte clientId = cmd.charAt(2);
+    Serial.write(RESPONSE_START_CHAR);
+    Serial.write(clientId);
+    Serial.print(getID());
+    Serial.print(F(RESPONSE_END_STRING));
+  }
+}
+
 void draw_link()
 {
   u8g.firstPage();
   do {
     u8g.drawBitmapP(35, 8, 8, 64, link);
   } while (u8g.nextPage() );
-  if(USBSTA&(1<<VBUS)){  //checks state of VBUS
-      int i=0;
+/*
+if(USBSTA&(1<<VBUS)){  //checks state of VBUS
+      int i = 0;
       Keyboard.begin();
       digitalWrite(led,HIGH);
       for(i=0;i<6;i++)
@@ -2019,6 +2112,36 @@ void draw_link()
         Keyboard.end();
       digitalWrite(led,LOW);
   //delay(3000);
+*/
+Keyboard.begin();
+while(1) {
+  int len = Serial.available();
+  for (int i = 0; i < len; i ++) {
+    // Keyboard.print('Y');
+    cmdBuf += (char)Serial.read();
+  }
+  if (cmdBuf != "") {
+    // drop useless data
+    if (cmdBuf.charAt(0) != COMMAND_START_CHAR) {
+      int pos = cmdBuf.indexOf(COMMAND_START_CHAR);
+      if (pos != -1) {
+        cmdBuf = cmdBuf.substring(pos);
+      } 
+      else {
+        cmdBuf = "";
+      }
+    }
+    // extract complete command
+    if (cmdBuf != "") {
+      int pos = cmdBuf.indexOf(COMMAND_END_STRING);
+      if (pos != -1) {
+        String cmd = cmdBuf.substring(0, pos + cmdEndStrLen);
+        cmdBuf = cmdBuf.substring(pos + cmdEndStrLen);
+        processCommand(cmd);
+      }
+    }
+  }
+}
 }
 
 void draw_reg()
@@ -2316,7 +2439,13 @@ void setup() {
   scroll_intro();
   draw_icon(icon);
   
+  // if has no id yet, generate one
+  if (getID() == "") {
+    generateID();
+  }
 
+  // initialize serial port
+  Serial.begin(BAUD_RATE);
 }
 
 void loop() {  
