@@ -1660,6 +1660,7 @@ void uiSetup(void) {
   pinMode(uiKeyRight, INPUT);           
   digitalWrite(uiKeyRight, HIGH);       
   pinMode(led, OUTPUT);
+  digitalWrite(led,LOW);
 }
 
 
@@ -1673,9 +1674,9 @@ void uiStep(void) { // optimize out digitalRead
     uiKeyCodeFirst = KEY_SELECT;
   else if ( digitalRead(uiKeyBack) == LOW )
     uiKeyCodeFirst = KEY_BACK;
-    else if ( digitalRead(uiKeyLeft) == LOW )
+  else if ( digitalRead(uiKeyLeft) == LOW )
     uiKeyCodeFirst = KEYLEFT;
-    else if ( digitalRead(uiKeyRight) == LOW )
+  else if ( digitalRead(uiKeyRight) == LOW )
     uiKeyCodeFirst = KEYRIGHT;
   else 
     uiKeyCodeFirst = KEY_NONE;
