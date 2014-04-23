@@ -1703,6 +1703,11 @@ void uiStep(void) { // optimize out digitalRead
     uiKeyCode = uiKeyCodeFirst;
   else
     uiKeyCode = KEY_NONE;
+      #if defined (DEBUG)
+      if(uiKeyCode){
+          Serial.print("Key :");Serial.println(uiKeyCode);
+      }
+      #endif
 }
 
 
@@ -2083,12 +2088,11 @@ void draw_link()
   do {
     u8g.drawBitmapP(35, 8, 8, 64, link);
   } while (u8g.nextPage() );
-/*
-if(USBSTA&(1<<VBUS)){  //checks state of VBUS
-      int i = 0;
+  while(USBSTA&(1<<VBUS)){  //checks state of VBUS
+      int i=0;
       Keyboard.begin();
       digitalWrite(led,HIGH);
-      for(i=0;i<6;i++)
+      /*for(i=0;i<6;i++)
       {
          if(digitalRead(inputs[i])==LOW) {
              if(isPlayer1) {
@@ -2103,13 +2107,21 @@ if(USBSTA&(1<<VBUS)){  //checks state of VBUS
                  Keyboard.release(p2keys[i]);
              }
          }
+      }*/
+      uiStep();
+      switch (uiKeyCode)
+      {
+        case KEYLEFT: Keyboard.write('A'); break;
+        case KEYRIGHT: Keyboard.write('D'); break;
+        case KEY_PREV: Keyboard.write('W'); break;
+        case KEY_NEXT: Keyboard.write('S'); break;
+        default: break;
       }
-      
-   }
-   else {
+      }
+  // else {
       Keyboard.end();
       digitalWrite(led,LOW);
-   }
+ //  }
         Keyboard.end();
       digitalWrite(led,LOW);
   //delay(3000);
@@ -2245,6 +2257,7 @@ void danceParty(){
  {
     uiStep(); 
     switch ( uiKeyCode ) {
+
       case KEYLEFT:  
             u8g.firstPage();
             do {
