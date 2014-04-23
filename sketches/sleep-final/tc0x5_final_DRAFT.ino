@@ -2,7 +2,7 @@
 #include <EEPROM.h>
 #include <avr/sleep.h>
 
-///*
+/*
 U8GLIB_DOGS102 u8g(0,4); //teesy 
 uint8_t uiKeyPrev = 17;
 uint8_t uiKeyNext = 18;
@@ -11,9 +11,9 @@ uint8_t uiKeyBack = 15;
 uint8_t uiKeyRight = 20;
 uint8_t uiKeyLeft = 19;
 uint8_t led = 11;
-//*/
+*/
 
-/*
+
 U8GLIB_DOGS102 u8g(17,11); //PROTO BOARD
 //Leonardo based pin assignements must have updated pins_arduino.h for pin 30
 uint8_t uiKeyPrev = 4;
@@ -23,14 +23,14 @@ uint8_t uiKeyBack = 6;
 uint8_t uiKeyRight = 30;
 uint8_t uiKeyLeft = 1;
 uint8_t led = 3;
-*/
+
 
 int isPlayer1 = 1;
 char inputs[6] = { 0x04, 0x01, 0x00, 0x1E, 0x06, 0x0C };
 char p1keys[7] = { 'W', 'A', 'S', 'D', 'Q', 'E', 'P' };
 char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 
-#define DEBUG 1
+//#define DEBUG 1
 
 /*select one badge type for compile*/
 
