@@ -24,6 +24,11 @@ uint8_t uiKeyLeft = 1;
 uint8_t led = 3;
 */
 
+int isPlayer1 = 1;
+char inputs[6] = { 0x04, 0x01, 0x00, 0x1E, 0x06, 0x0C };
+char p1keys[7] = { 'W', 'A', 'S', 'D', 'Q', 'E', 'P' };
+char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
+
 #define DEBUG 1
 
 /*select one badge type for compile*/
@@ -1986,9 +1991,25 @@ void draw_link()
     u8g.drawBitmapP(35, 8, 8, 64, link);
   } while (u8g.nextPage() );
   if(USBSTA&(1<<VBUS)){  //checks state of VBUS
+      int i=0;
       Keyboard.begin();
       digitalWrite(led,HIGH);
-      Keyboard.print('J');
+      for(i=0;i<6;i++)
+      {
+         if(digitalRead(inputs[i])==LOW) {
+             if(isPlayer1) {
+                 Keyboard.press(p1keys[i]);
+             } else {
+                 Keyboard.press(p2keys[i]);
+             }
+         } else {
+             if(isPlayer1) {
+                 Keyboard.release(p1keys[i]);
+             } else {
+                 Keyboard.release(p2keys[i]);
+             }
+         }
+      }
       
    }
    else {
