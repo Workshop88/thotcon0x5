@@ -34,11 +34,11 @@ char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 
 /*select one badge type for compile*/
 
-//#define HACKER_BADGE 1  //BLACK
+#define HACKER_BADGE 1  //BLACK
 //#define OPER_BADGE 1    //RED
 //#define VOICE_BADGE 1     //BLUE
 //#define VIP_BADGE 1     //GREEN
-#define ROOT_BADGE 1     //GOLD
+//#define ROOT_BADGE 1     //GOLD
 
 /* Tweak here for idle time, this determines when the badge draws and sleeps
    IDLE_MS should be left below 25 (~human reaction time).
@@ -1997,9 +1997,9 @@ void draw_link()
         if(change&DOWN)
           toggleKey(KEY_DOWN_ARROW, buttonMask&DOWN);
         if(change&LEFT)
-          toggleKey(KEY_LEFT_ARROW, buttonMask&LEFT);
+          toggleKey(KEY_RIGHT_ARROW, buttonMask&LEFT);
         if(change&RIGHT)
-          toggleKey(KEY_RIGHT_ARROW, buttonMask&RIGHT);
+          toggleKey(KEY_LEFT_ARROW, buttonMask&RIGHT);
         if(change&A_BUTTON)
           toggleKey(KEY_LEFT_CTRL, buttonMask&A_BUTTON);
         if(change&B_BUTTON)
@@ -2010,9 +2010,9 @@ void draw_link()
         if(change&DOWN)
           toggleKey('k', buttonMask&DOWN);
         if(change&LEFT)
-          toggleKey('j', buttonMask&LEFT);
+          toggleKey('l', buttonMask&LEFT);
         if(change&RIGHT)
-          toggleKey('l', buttonMask&RIGHT);
+          toggleKey('j', buttonMask&RIGHT);
         if(change&A_BUTTON)
           toggleKey('o', buttonMask&A_BUTTON);
         if(change&B_BUTTON)
