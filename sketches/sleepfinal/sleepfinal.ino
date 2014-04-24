@@ -34,9 +34,9 @@ char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 
 /*select one badge type for compile*/
 
-//#define HACKER_BADGE 1  //BLACK
+#define HACKER_BADGE 1  //BLACK
 //#define OPER_BADGE 1    //RED
-#define VOICE_BADGE 1     //BLUE
+//#define VOICE_BADGE 1     //BLUE
 //#define VIP_BADGE 1     //GREEN
 //#define ROOT_BADGE 1     //GOLD
 
@@ -1624,8 +1624,6 @@ void uiStep(void) { // optimize out digitalRead
       #endif
 }
 
-
-
 const char mm1_str[] PROGMEM = "Game";
 const char mm2_str[] PROGMEM = "Schedule";
 const char mm3_str[] PROGMEM = "GameLink";
@@ -1922,8 +1920,45 @@ void drawMenuInfo(){
  
 }
 
+#define UP       0x01
+#define DOWN     0x02
+#define LEFT     0x04
+#define RIGHT    0x08
+#define A_BUTTON 0x10
+#define B_BUTTON 0x20
+
+
+byte buttonMask = 0;
+byte lastMask=0;
+
+void toggleKey(char key, int val)
+{
+  if(val)
+    Keyboard.press(key);
+  else
+    Keyboard.release(key);
+}
+
+void calculateMask()
+{
+  buttonMask=0;
+  if ( digitalRead(uiKeyPrev) == LOW )
+    buttonMask=UP;
+  if ( digitalRead(uiKeyNext) == LOW )
+    buttonMask|=DOWN;
+  if ( digitalRead(uiKeySelect) == LOW )
+    buttonMask|=A_BUTTON;
+  if ( digitalRead(uiKeyBack) == LOW )
+    buttonMask|=B_BUTTON;
+  if ( digitalRead(uiKeyLeft) == LOW )
+    buttonMask|=LEFT;
+  if ( digitalRead(uiKeyRight) == LOW )
+    buttonMask|=RIGHT;
+}
+
 void draw_link()
 {
+ 
  
   u8g.firstPage();
   do{
@@ -1946,42 +1981,47 @@ void draw_link()
   do {
     u8g.drawBitmapP(35, 8, 8, 64, link);
   } while (u8g.nextPage() );
+  Keyboard.begin();
   while(USBSTA&(1<<VBUS)){  //checks state of VBUS
       int i=0;
-      Keyboard.begin();
+      byte change=0;
+ 
       digitalWrite(led,HIGH);
-      uiStep();
+      lastMask=buttonMask;
+      calculateMask();
+      change = lastMask^buttonMask;
+      
       if(isPlayer1) {
-        switch (uiKeyCode)
-        {
-          case KEYLEFT: Keyboard.write(KEY_LEFT_ARROW); break;
-          case KEYRIGHT: Keyboard.write(KEY_RIGHT_ARROW); break;
-          case KEY_PREV: Keyboard.write(KEY_UP_ARROW); break;
-          case KEY_NEXT: Keyboard.write(KEY_DOWN_ARROW); break;
-          case KEY_SELECT: Keyboard.write(KEY_LEFT_CTRL); break;
-          case KEY_BACK: Keyboard.write(KEY_LEFT_ALT); break;
-          default: break;
-        }
+        if(change&UP)
+          toggleKey(KEY_UP_ARROW, buttonMask&UP);
+        if(change&DOWN)
+          toggleKey(KEY_DOWN_ARROW, buttonMask&DOWN);
+        if(change&LEFT)
+          toggleKey(KEY_LEFT_ARROW, buttonMask&LEFT);
+        if(change&RIGHT)
+          toggleKey(KEY_RIGHT_ARROW, buttonMask&RIGHT);
+        if(change&A_BUTTON)
+          toggleKey(KEY_LEFT_CTRL, buttonMask&A_BUTTON);
+        if(change&B_BUTTON)
+          toggleKey(KEY_LEFT_ALT, buttonMask&B_BUTTON);
       } else {
-        switch (uiKeyCode)
-        {
-          case KEYLEFT: Keyboard.write('J'); break;
-          case KEYRIGHT: Keyboard.write('L'); break;
-          case KEY_PREV: Keyboard.write('I'); break;
-          case KEY_NEXT: Keyboard.write('K'); break;
-          case KEY_SELECT: Keyboard.write('O'); break;
-          case KEY_BACK: Keyboard.write('U'); break;
-          default: break;
-        }
+        if(change&UP)
+          toggleKey('i', buttonMask&UP);
+        if(change&DOWN)
+          toggleKey('k', buttonMask&DOWN);
+        if(change&LEFT)
+          toggleKey('j', buttonMask&LEFT);
+        if(change&RIGHT)
+          toggleKey('l', buttonMask&RIGHT);
+        if(change&A_BUTTON)
+          toggleKey('o', buttonMask&A_BUTTON);
+        if(change&B_BUTTON)
+          toggleKey('u', buttonMask&B_BUTTON);
       }
-      }
-  // else {
-      Keyboard.end();
-      digitalWrite(led,LOW);
- //  }
-        Keyboard.end();
-      digitalWrite(led,LOW);
-  //delay(3000);
+
+    }
+    Keyboard.end();
+    digitalWrite(led,LOW);
 }
 
 void draw_reg()
