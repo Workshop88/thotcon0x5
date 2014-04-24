@@ -34,11 +34,11 @@ char p2keys[7] = { 'I', 'J', 'K', 'L', 'U', 'O', 'R' };
 
 /*select one badge type for compile*/
 
-#define HACKER_BADGE 1  //BLACK
+//#define HACKER_BADGE 1  //BLACK
 //#define OPER_BADGE 1    //RED
 //#define VOICE_BADGE 1     //BLUE
 //#define VIP_BADGE 1     //GREEN
-//#define ROOT_BADGE 1     //GOLD
+#define ROOT_BADGE 1     //GOLD
 
 /* Tweak here for idle time, this determines when the badge draws and sleeps
    IDLE_MS should be left below 25 (~human reaction time).
