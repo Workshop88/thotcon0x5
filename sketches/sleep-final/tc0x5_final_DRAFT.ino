@@ -1964,30 +1964,29 @@ void draw_link()
       int i=0;
       Keyboard.begin();
       digitalWrite(led,HIGH);
-      /*for(i=0;i<6;i++)
-      {
-         if(digitalRead(inputs[i])==LOW) {
-             if(isPlayer1) {
-                 Keyboard.press(p1keys[i]);
-             } else {
-                 Keyboard.press(p2keys[i]);
-             }
-         } else {
-             if(isPlayer1) {
-                 Keyboard.release(p1keys[i]);
-             } else {
-                 Keyboard.release(p2keys[i]);
-             }
-         }
-      }*/
       uiStep();
-      switch (uiKeyCode)
-      {
-        case KEYLEFT: Keyboard.write('A'); break;
-        case KEYRIGHT: Keyboard.write('D'); break;
-        case KEY_PREV: Keyboard.write('W'); break;
-        case KEY_NEXT: Keyboard.write('S'); break;
-        default: break;
+      if(isPlayer1) {
+        switch (uiKeyCode)
+        {
+          case KEYLEFT: Keyboard.write('A'); break;
+          case KEYRIGHT: Keyboard.write('D'); break;
+          case KEY_PREV: Keyboard.write('W'); break;
+          case KEY_NEXT: Keyboard.write('S'); break;
+          case KEY_SELECT: Keyboard.write('E'); break;
+          case KEY_BACK: Keyboard.write('Q'); break;
+          default: break;
+        }
+      } else {
+        switch (uiKeyCode)
+        {
+          case KEYLEFT: Keyboard.write('J'); break;
+          case KEYRIGHT: Keyboard.write('L'); break;
+          case KEY_PREV: Keyboard.write('I'); break;
+          case KEY_NEXT: Keyboard.write('K'); break;
+          case KEY_SELECT: Keyboard.write('O'); break;
+          case KEY_BACK: Keyboard.write('U'); break;
+          default: break;
+        }
       }
       }
   // else {
@@ -2206,7 +2205,7 @@ void menu_state()
     switch(global_state) {
     case GAME_STATE:  u8g.undoRotation(); bo_loop(); u8g.setRot180();  break;
     case SCHED_STATE: menu_redraw = 1; drawMenu(sched_menu_str); menu_redraw = 0; break;
-    case LINK_STATE: draw_link(); break;
+    case LINK_STATE: isPlayer1=1; draw_link(); break;
     case REG_STATE: /*draw_icon(qr);*/ draw_reg(); break;
     case HELP_STATE:menu_redraw = 1; draw_help(); help_SOS(); menu_redraw=0; break;
     case TRACK_ONE_STATE:
